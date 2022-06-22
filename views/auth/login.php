@@ -86,7 +86,7 @@
 
   <p class="mt-3">Don't Have an account? <a href="<?php echo route('register');?>">Register Now</a></p>
 </form>
-
+aa
 <script>
     
       let emailError = true;
