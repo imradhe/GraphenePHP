@@ -1,5 +1,5 @@
 <?php
-    require("views/auth/AuthController.php");
+    controller('Auth');
     $auth = new Auth();
     $auth->logout();
 ?>

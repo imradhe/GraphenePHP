@@ -67,7 +67,7 @@ class Auth
                 $insertLog = $this->db->query("INSERT INTO logs (`loginID`, `email`, `ip`, `browser`, `os`) VALUES ('$this->loginID','$this->email','$this->ip','$this->browser','$this->os')");
     
                 if($insertLog){
-                    if(!empty($_GET['back'])) header("Location:".$_GET['back']);
+                    if(!empty($_GET['back'])) header("Location:".str_replace('@','?',str_replace('$','&',$_GET['back'])));
                     else header("Location:".home());
                 }
                 else{

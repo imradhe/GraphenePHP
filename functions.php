@@ -37,7 +37,7 @@ function locked($role = 'user'){
 
 
 function redirectIfLocked(){
-  if(url() != route("login")) header("Location:".route("login")."?back=".url().str_replace('&','$',queryString()));
+  if(url() != route("login")) header("Location:".route("login")."?back=".url().str_replace('?','@',str_replace('&','$',queryString())));
 }
 
 
