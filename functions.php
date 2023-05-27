@@ -1,5 +1,4 @@
 <?php
-
 // Home URL
 function home(){    
     require('config.php');

@@ -10,5 +10,4 @@ set_error_handler("myErrorHandler");
 trigger_error("");
 unset($_ERRORS[0]);
 $abc = $bcs;
-
 echo json_encode($_ERRORS);

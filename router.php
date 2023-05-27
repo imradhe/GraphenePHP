@@ -16,7 +16,6 @@ class Router
     public function run()
     {   
        require('config.php');
-        
        // URL parsing
        $this->request = (empty($config['APP_SLUG']))? substr(explode("?", $this->request)[0], 1): substr(explode("?", $this->request)[0], strlen($config['APP_SLUG'])+2);
 

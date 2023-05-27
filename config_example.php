@@ -1,4 +1,5 @@
 <?php
+
 $config  =[
 
         'APP_NAME'=>'GraphenePHP',
