@@ -1,0 +1,48 @@
+@font-face {
+    font-family: Graphene;
+    src: url(../fonts/Graphene.otf) format("truetype");
+}
+
+* {
+    font-family: Graphene !important;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+.btn:focus {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+img{
+    user-select: none !important;
+    pointer-events:none !important;
+}
+#app img {
+    max-height: 40vh;
+}
+
+.btn-graphene {
+    font-weight: bolder;
+    letter-spacing: 1px;
+    padding: 8px 28px;
+    border-radius: 50px;
+    transition: 0.5s;
+    margin: 10px;
+    background-color: rgba(173, 220, 203);
+    color: #000;
+    border: 2px solid #ADDCCB;
+}
+
+.btn-graphene:hover,
+.btn-graphene:active,
+.btn-graphene:focus {
+    background-color: rgba(173, 220, 203, .3);
+    border: 2px solid #ADDCCB;
+    color: #000;
+}
+
+.navbar *{
+    user-select: none !important;
+}
