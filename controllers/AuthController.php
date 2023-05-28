@@ -42,7 +42,7 @@ class Auth
         if($loginQuery){
             // Check if password is correct
             if($loginQuery['password'] == md5($this->password)){
-                $this->loginID = md5($this->email.$this->password.time());
+                $this->loginID = sha1(md5($this->email).md5($this->password).md5(time()));
                 setcookie("auth", $this->loginID, time() + (86400 * 365), "/");
 
                 $this->ip = getDevice()['ip'];
