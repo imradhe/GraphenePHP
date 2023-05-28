@@ -45,6 +45,7 @@ function pageNotFound(){
     http_response_code(404);
     header("HTTP/1.0 404 Page Not Found");
     include('views/errors/404.php');
+    exit;
 }
 // Lock a file
 function locked($role = ['user']){
