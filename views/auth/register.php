@@ -3,10 +3,7 @@
     $customers = DB::select('users')->fetchAll();
     DB::close();
 
-    foreach ($customers as $key => $value) {
-        $emails[$key] = $value;
-    }
-
+    
     if(isset($_POST['btn-register'])){
         controller("Auth");
         $user = new Auth();
@@ -127,7 +124,7 @@ body {
       let emails = []
       
       <?php
-        foreach($emails as $email){
+        foreach($customers as $email){
           echo "emails.push('".md5($email['email'])."')\n";
         }
       ?>
