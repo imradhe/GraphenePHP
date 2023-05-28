@@ -1,16 +1,16 @@
 <?php
-
 class App{
 
+
+    
     // Get Current Session
     public static function getSession(){
         $loginID = $_COOKIE['auth'];
-        
-        require("db.php");
-        $query = mysqli_fetch_assoc(mysqli_query($con,"SELECT * from logs where loginID='$loginID' and loggedout=0"));
-        
+        DB::connect();
+        $query = DB::select('logs', '*', "loginID='$loginID' and loggedout=0")->fetchAll();
+        DB::close();
         if($query){
-        return $query;
+        return $query[0];
         }
         else return false;
     }  
@@ -20,13 +20,13 @@ class App{
     public static function getUser(){
         $loginID = $_COOKIE['auth'];
     
-        require("db.php");
-        $query = mysqli_fetch_assoc(mysqli_query($con,"SELECT * from logs where loginID='$loginID' and loggedout=0"));
-    
+        DB::connect();
+        $query = DB::select('logs', '*', "loginID='$loginID' and loggedout=0")->fetchAll()[0];
         if($query){
             $email = $query['email'];
-            $currentLog = mysqli_fetch_assoc(mysqli_query($con,"SELECT * from users where email='$email'"));
-            return $currentLog;
+            $currentLog = DB::select('users', '*', "email='$email'")->fetchAll();
+            DB::close();
+            return $currentLog[0];
         }
         else return false;
     }
