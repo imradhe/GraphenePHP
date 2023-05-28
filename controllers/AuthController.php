@@ -11,19 +11,17 @@ class Auth
     }
 
     // Check the session validity
-    public function checkSession(){
+    public function checkSession() {
         $this->loginID = $_COOKIE['auth'];
-
-        $stmt = $this->db->prepare("SELECT * FROM logs WHERE loginID = ? AND loggedout = 0");
-        $stmt->bind_param("s", $this->loginID);
-        $stmt->execute();
-        $result = $stmt->get_result();
-
-        if($result->num_rows > 0){
-            $this->currentLog = $result->fetch_assoc();
+        
+        DB::connect();
+        $query = DB::select('logs', '*', "loginID = '$this->loginID' AND loggedout = 0")->fetchAll();
+        DB::close();
+    
+        if ($query) {
+            $this->currentLog = $query[0];
             return $this->currentLog;
-        }
-        else{
+        } else {
             return false;
         }
     }
@@ -32,28 +30,37 @@ class Auth
         $this->email = trim($email);
         $this->password = $password;
 
-        $stmt = $this->db->prepare("SELECT * FROM users WHERE email = ?");
-        $stmt->bind_param("s", $this->email);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $loginQuery = $result->fetch_assoc();
-
+        
+        
+        DB::connect();
+        $loginQuery = DB::select('users', '*', "email = '$this->email'")->fetchAll()[0];
+        //return gettype($loginQuery->fetchAll());
+        DB::close();
         // Check if user exists
         if($loginQuery){
             // Check if password is correct
             if($loginQuery['password'] == md5($this->password)){
-                $this->loginID = sha1(md5($this->email).md5($this->password).md5(time()));
+                
+                $this->loginID = md5(sha1($this->email).sha1($this->password).sha1(time()));
                 setcookie("auth", $this->loginID, time() + (86400 * 365), "/");
 
                 $this->ip = getDevice()['ip'];
                 $this->os = getDevice()['os'];
                 $this->browser = getDevice()['browser'];
 
-                $stmt = $this->db->prepare("INSERT INTO logs (`loginID`, `email`, `ip`, `browser`, `os`) VALUES (?, ?, ?, ?, ?)");
-                $stmt->bind_param("sssss", $this->loginID, $this->email, $this->ip, $this->browser, $this->os);
-                $stmt->execute();
+                $data = [
+                    'loginID' => $this->loginID,
+                    'email' => $this->email,
+                    'ip' => $this->ip,
+                    'browser' => $this->browser,
+                    'os' => $this->os
+                ];
+                
+                DB::connect();
+                $insertedLog = DB::insert('logs', $data);
+                DB::close();
 
-                if($stmt->affected_rows > 0){
+                if($insertedLog){
                     if(!empty($_GET['back'])){
                         header("Location:".$_GET['back']);
                     }
@@ -72,15 +79,15 @@ class Auth
         else{
             $this->errors = "User Not Found";
         }
+        return ['error'=>true, 'errorMsg'=>$this->errors];
     }
 
     // Check if email exists
     public function check($email, $role){
-        $stmt = $this->db->prepare("SELECT * FROM users WHERE email = ?");
-        $stmt->bind_param("s", $email);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        return $result->num_rows;
+        DB::connect();
+        $result = DB::select('users', '*', "email = '$email' and role = '$role'")->fetchAll();
+        DB::close();
+        return count($result);
     }
     
     // Form Validations
