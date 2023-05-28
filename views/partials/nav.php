@@ -12,10 +12,10 @@
 
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
 
-            <?php if(getSession()){?>
+            <?php if(App::getSession()){?>
             <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                <i class="bi bi-person-circle"></i> <?php echo getUser()['name'];?>
+                <i class="bi bi-person-circle"></i> <?php echo App::getUser()['name'];?>
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                 <li><a class="dropdown-item" href="<?php echo route('profile');?>">Profile</a></li>
@@ -26,7 +26,7 @@
 
             <?php } ?>
             <li class="nav-item">
-                <?php if(!getSession()){?>
+                <?php if(!App::getSession()){?>
                     <a class="nav-link" aria-current="page" href="<?php echo route('login')."?back=".url();?>">Login</a>
                 <?php }?>
             </li>

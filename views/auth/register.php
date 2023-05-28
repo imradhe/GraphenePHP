@@ -13,7 +13,7 @@
         $user = new Auth();
         $register = $user->register($_POST['name'], $_POST['email'], $_POST['phone'],$_POST['password'], 'user');
     }else{
-      if(getUser()['role'] == 'user') header("Location:".home());
+      if(App::getUser()['role'] == 'user') header("Location:".home());
     }
 ?>
 <!doctype html>

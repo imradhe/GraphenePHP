@@ -1,3 +1,6 @@
 <?php
-controller('App');
-echo json_encode(App::getUser());
+require 'vendor/autoload.php';
+
+$mpdf = new \Mpdf\Mpdf();
+$mpdf->WriteHTML('<h1>Hello world!</h1>');
+$mpdf->Output();

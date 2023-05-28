@@ -3,7 +3,7 @@
 class App{
 
     // Get Current Session
-    function getSession(){
+    public static function getSession(){
         $loginID = $_COOKIE['auth'];
         
         require("db.php");
