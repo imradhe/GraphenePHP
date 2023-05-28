@@ -1,8 +1,7 @@
 <?php
-
-    require('db.php');
-    $customers = mysqli_query($con,"SELECT * FROM `users`");
-
+    DB::connect();
+    $customers = DB::select('users')->fetchAll();
+    DB::close();
 
     foreach ($customers as $key => $value) {
         $emails[$key] = $value;
