@@ -1,6 +1,16 @@
 {
+    "name" : "graphenephp/v2",
+    "description": "A simple and light-weight PHP MVC Framework",
     "require": {
         "phpmailer/phpmailer": "^6.5",
         "mpdf/mpdf": "^8.1"
-    }
+    },
+    "authors": [
+        {
+            "name": "Radhe Shyam Salopanthula",
+            "email": "contact@imradhe.com",
+            "homepage": "https://imradhe.com",
+            "role": "Developer"
+        }
+    ]
 }
