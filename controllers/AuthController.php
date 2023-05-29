@@ -1,5 +1,4 @@
 <?php
-errors(1);
 class Auth
 {
     protected $db;
