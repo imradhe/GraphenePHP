@@ -5,8 +5,6 @@ class Auth
     protected $errors;
 
     public function __construct(){
-        require('db.php');
-        $this->db = new mysqli($config['DB_HOST'],$config['DB_USERNAME'], $config['DB_PASSWORD'], $config['DB_DATABASE']);
         $this->errors = "";
     }
 
@@ -48,12 +46,14 @@ class Auth
                 $this->os = getDevice()['os'];
                 $this->browser = getDevice()['browser'];
 
+                $time = date_create()->format('Y-m-d H:i:s');
                 $data = [
                     'loginID' => $this->loginID,
                     'email' => $this->email,
                     'ip' => $this->ip,
                     'browser' => $this->browser,
-                    'os' => $this->os
+                    'os' => $this->os,
+                    'loggedinat' => $time
                 ];
                 
                 DB::connect();
@@ -177,22 +177,20 @@ class Auth
 
     }
 
-    public function getUser($email){
-    $stmt = $this->db->prepare("SELECT * FROM users WHERE email = ?");
-    $stmt->bind_param("s", $email);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $getUser = $result->fetch_assoc();
-    return $getUser;
+public function getUser($email){
+    DB::connect();
+    $getUser = DB::select('users', '*', "email = '$email'")->fetchAll();
+    DB::close();
+    if($getUser) return $getUser;
+    else return false;
 }
 
 public function getUsers(){
-    $users = array();
-    $query = $this->db->query("SELECT * FROM users");
-    while ($user = $query->fetch_assoc()) {
-        $users[] = $user;
-    }
-    return $users;
+    DB::connect();
+    $users = DB::select('users', '*')->fetchAll();
+    DB::close();
+    if($users) return $users;
+    else return false;
 }
 
 public function validateEdit($name, $email, $phone, $password, $role){
@@ -264,22 +262,32 @@ public function validateEdit($name, $email, $phone, $password, $role){
 }
 
 public function register($name, $email, $phone, $password, $role){
-    $this->name = trim($this->db->real_escape_string($name));
-    $this->email = trim($this->db->real_escape_string($email));
-    $this->phone = trim($this->db->real_escape_string($phone));
-    $this->password = md5($this->db->real_escape_string($password));
-    $this->passwordWithoutMD5 =  $this->db->real_escape_string($password);
-    $this->role = trim($this->db->real_escape_string($role));
+    DB::connect();
+    $this->name = trim(($name));
+    $this->email = trim(($email));
+    $this->phone = trim(($phone));
+    $this->password = md5(($password));
+    $this->passwordWithoutMD5 =  ($password);
+    $this->role = trim(($role));
 
     $validate = $this->validate($this->name, $this->email, $this->phone, $this->passwordWithoutMD5, $this->role);
 
     if($validate['error']){
         return ['error' => $validate['error'], 'errorMsgs' => $validate['errorMsgs']];
     }else{
-        $stmt = $this->db->prepare("INSERT INTO users (`name`, `email`, `password`, `phone`, `role`) VALUES (?, ?, ?, ?, ?)");
-        $stmt->bind_param("sssss", $this->name, $this->email, $this->password, $this->phone, $this->role);
-        $createUser = $stmt->execute();
-        $stmt->close();
+        
+        $data = array(
+            'name' => $this->name,
+            'email' => $this->email,
+            'password' => $this->password,
+            'phone' => $this->phone,
+            'role' => $this->role
+        );
+        
+        
+        DB::connect();
+        $createUser = DB::insert('users', $data);
+        DB::close();
 
         if($createUser){
             $this->error = false;
@@ -299,31 +307,38 @@ public function register($name, $email, $phone, $password, $role){
 }
 
 public function edit($data){
-    $this->name = trim($this->db->real_escape_string($data['name']));
-    $this->email = trim($this->db->real_escape_string($data['email']));
-    $this->phone = trim($this->db->real_escape_string($data['phone']));
-    $this->password = $this->db->real_escape_string($data['password']);
-    $this->role = trim($this->db->real_escape_string($data['role']));
-    $this->status = trim($this->db->real_escape_string($data['status']));
+    $this->name = trim(($data['name']));
+    $this->email = trim(($data['email']));
+    $this->phone = trim(($data['phone']));
+    $this->password = ($data['password']);
+    $this->role = trim(($data['role']));
+    $this->status = trim(($data['status']));
     
     $validate = $this->validateEdit($this->name, $this->email, $this->phone, $this->password, $this->role);
 
     if($validate['error']){
         return ['error' => $validate['error'], 'errorMsgs' => $validate['errorMsgs']];
     }else{
-        $this->password = md5($this->db->real_escape_string($data['password']));
+        $this->password = md5(($data['password']));
         
-        $stmt = $this->db->prepare("UPDATE users SET `name` = ?, `password` = ?, `phone` = ?, `role` = ?, `status` = ? WHERE `email` = ?");
-        $stmt->bind_param("ssssis", $this->name, $this->password, $this->phone, $this->role, $this->status, $this->email);
-        $updateUser = $stmt->execute();
-        $stmt->close();
+        $data = array(
+            'name' => $this->name,
+            'password' => $this->password,
+            'phone' => $this->phone,
+            'role' => $this->role,
+            'status' => $this->status
+        );
+        
+        DB::connect();
+        $updateUser = DB::update('users', $data, "email = '$this->email'");
+        DB::close();
 
         if($updateUser){
             $this->error = false;
             $this->errorMsgs['updateUser'] = '';
         }else{
             $this->error = true;
-            $this->errorMsgs['updateUser'] = 'User account Updation failed ' . $this->db->error;
+            $this->errorMsgs['updateUser'] = 'User account Updation failed ';
         }
 
         if($this->error){
@@ -341,25 +356,21 @@ public function edit($data){
 }
 
 public function delete($email) {
-    $email = $this->db->real_escape_string($email);
-  
-    $getUserStmt = $this->db->prepare("SELECT * FROM users WHERE email = ?");
-    $getUserStmt->bind_param("s", $email);
-    $getUserStmt->execute();
-    $getUserResult = $getUserStmt->get_result();
-    $getUserStmt->close();
 
-    if($getUserResult->num_rows === 0) {
+    if(!$this->getUser($email)) {
         return [
             'error' => true,
             'errorMsg' => 'User not found'
         ];
     }
-
-    $deleteUserStmt = $this->db->prepare("UPDATE users SET status = 0 WHERE email = ?");
-    $deleteUserStmt->bind_param("s", $email);
-    $deleteUser = $deleteUserStmt->execute();
-    $deleteUserStmt->close();
+    
+        $data = array(
+            'status' => 1
+        );
+        
+        DB::connect();
+        $deleteUser = DB::update('users', $data, "email = '$email'");
+        DB::close();
 
     if($deleteUser){
         return [
@@ -378,11 +389,17 @@ public function delete($email) {
 public function logout(){
     $loginID = App::getSession()['loginID'];
     $time = date_create()->format('Y-m-d H:i:s');
-    $updateLogStmt = $this->db->prepare("UPDATE logs SET loggedout = 1, loggedoutat = current_timestamp() WHERE loginID = ?");
-    $updateLogStmt->bind_param("i", $loginID);
-    $updateLog = $updateLogStmt->execute();
-    $updateLogStmt->close();
-
+    
+    
+        $data = array(
+            'loggedout' => 1,
+            'loggedoutat' => $time
+        );
+        
+        DB::connect();
+        $updateLog = DB::update('logs', $data, "loginID = '$loginID'");
+        DB::close();
+        
     if($updateLog){
         setcookie("auth", "", time()-(60*60*24*7), "/");
         unset($_COOKIE["auth"]);
