@@ -1,7 +1,8 @@
 <?php
+    if(isset($_POST['btn-login'])){
+        csrfCheck();
       controller("Auth");
       $auth = new Auth();
-    if(isset($_POST['btn-login'])){
       $user = $auth->login($_POST['email'],$_POST['password']);
     }else{
       if(App::getSession()) header("Location:".home());
@@ -69,6 +70,8 @@
       <?php echo $auth->errors;?>
     </div>
   <?php }?>
+  
+    <?php csrf() ?>
   <div class="mb-3">
     <input name="email" type="email" id="email" class="form-control" placeholder="Email" required>
     <strong id="emailMsg" class="text-danger errorMsg my-2 fw-bolder"></strong>
