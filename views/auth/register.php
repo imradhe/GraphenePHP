@@ -3,15 +3,16 @@
     $customers = DB::select('users')->fetchAll();
     DB::close();
 
-    
     if(isset($_POST['btn-register'])){
+        csrfCheck();
         controller("Auth");
         $user = new Auth();
         $register = $user->register($_POST['name'], $_POST['email'], $_POST['phone'],$_POST['password'], 'user');
     }else{
       if(App::getUser()['role'] == 'user') header("Location:".home());
     }
-?>
+    
+  ?>
 <!doctype html>
 <html lang="en">
   <head>
@@ -75,7 +76,9 @@ body {
   </div>
   <form method="POST" name="Register" class="form-signin">
   <h2 class="mb-3 fw-bolder">User Registration </h1>
-
+    
+    <?php csrf() ?>
+  
   <div class="mb-3">
     <input name="name" type="name" id="name" class="form-control" placeholder="Name" value="<?php echo (!empty($_POST['name'])) ? $_POST['name'] : '' ;?>" required>
     <strong id="nameMsg" class="text-danger errorMsg my-2 fw-bolder"></strong>
@@ -101,7 +104,7 @@ body {
   </div>
 
 
-  <button class="btn btn-lg btn-graphene btn-block" id="btn-register" name="btn-register" type="register">Register</button>
+  <button class="btn btn-lg btn-graphene btn-block" id="btn-register" name="btn-register" type="register" disabled>Register</button>
 
   <p class="mt-3">Already Have an account? <a href="<?php echo route('login');?>">Login Now</a></p>
 </form>
@@ -222,7 +225,7 @@ body {
 
       function validateEmail() {
         let emailValue = email.value.trim().toLowerCase()
-        console.log(CryptoJS.MD5(emailValue))
+        
         let emailMsg = document.querySelector("#emailMsg")
         if (emailValue == "") {
           emailError = true
@@ -307,7 +310,7 @@ body {
 
 
       function checkErrors() {
-        errors = nameError + emailError + passwordError
+        errors = nameError + emailError + phoneError + passwordError
         if (errors) {
           document.querySelector("#btn-register").disabled = true;
         } else {
@@ -318,7 +321,8 @@ body {
 
       <?php if($register['error']) {?>
         validateName()
-        validateEmail()          
+        validateEmail()         
+        validatephone()           
         validatePassword()
       <?php }?>
 
