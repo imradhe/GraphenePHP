@@ -307,7 +307,7 @@ body {
 
 
       function checkErrors() {
-        errors = nameError + emailError +passwordError
+        errors = nameError + emailError + passwordError
         if (errors) {
           document.querySelector("#btn-register").disabled = true;
         } else {
