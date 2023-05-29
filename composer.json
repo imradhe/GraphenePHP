@@ -1,5 +1,5 @@
 {
-    "name" : "graphenephp/v2",
+    "name" : "graphenephp/graphenephp",
     "description": "A simple and light-weight PHP MVC Framework",
     "require": {
         "phpmailer/phpmailer": "^6.5",
