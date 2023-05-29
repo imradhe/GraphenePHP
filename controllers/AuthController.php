@@ -25,7 +25,7 @@ class Auth
     }
 
     public function login($email, $password){
-        $this->email = trim($email);
+        $this->email = strtolower(trim($email));
         $this->password = $password;
 
         
@@ -105,6 +105,7 @@ class Auth
             $errors['name'] = false;
             $errorMsgs['name'] = "";
         }
+        
 
         // Email Validation        
         $emailPattern = "/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/";
@@ -264,11 +265,13 @@ public function validateEdit($name, $email, $phone, $password, $role){
 public function register($name, $email, $phone, $password, $role){
     DB::connect();
     $this->name = trim(($name));
-    $this->email = trim(($email));
+    $this->email = strtolower(trim($email));
     $this->phone = trim(($phone));
     $this->password = md5(($password));
     $this->passwordWithoutMD5 =  ($password);
     $this->role = trim(($role));
+    
+    
 
     $validate = $this->validate($this->name, $this->email, $this->phone, $this->passwordWithoutMD5, $this->role);
 
@@ -319,7 +322,7 @@ public function edit($data){
     if($validate['error']){
         return ['error' => $validate['error'], 'errorMsgs' => $validate['errorMsgs']];
     }else{
-        $this->password = md5(($data['password']));
+        $this->password = md5($data['password']);
         
         $data = array(
             'name' => $this->name,
@@ -408,3 +411,4 @@ public function logout(){
 }
 
 } 
+
