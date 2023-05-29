@@ -1,5 +1,5 @@
 <?php    
-
+locked(['admin']);
 
 DB::connect();
 $data = DB::select('logs')->fetchAll();
