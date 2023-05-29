@@ -1,4 +1,5 @@
 <?php
+errors(1);
 class Auth
 {
     protected $db;
@@ -25,8 +26,8 @@ class Auth
     }
 
     public function login($email, $password){
-        $this->email = strtolower(trim($email));
-        $this->password = $password;
+        $this->email = strtolower(trim(DB::sanitize($email)));
+        $this->password = DB::sanitize($password);
 
         
         
@@ -264,12 +265,12 @@ public function validateEdit($name, $email, $phone, $password, $role){
 
 public function register($name, $email, $phone, $password, $role){
     DB::connect();
-    $this->name = trim(($name));
-    $this->email = strtolower(trim($email));
-    $this->phone = trim(($phone));
-    $this->password = md5(($password));
-    $this->passwordWithoutMD5 =  ($password);
-    $this->role = trim(($role));
+    $this->name = trim(DB::sanitize($name));
+    $this->email = strtolower(trim(DB::sanitize($email)));
+    $this->phone = trim(DB::sanitize($phone));
+    $this->password = md5(DB::sanitize($password));
+    $this->passwordWithoutMD5 =  DB::sanitize($password);
+    $this->role = trim(DB::sanitize($role));
     
     
 
@@ -310,12 +311,12 @@ public function register($name, $email, $phone, $password, $role){
 }
 
 public function edit($data){
-    $this->name = trim(($data['name']));
-    $this->email = trim(($data['email']));
-    $this->phone = trim(($data['phone']));
-    $this->password = ($data['password']);
-    $this->role = trim(($data['role']));
-    $this->status = trim(($data['status']));
+    $this->name = trim(DB::sanitize($data['name']));
+    $this->email = trim(DB::sanitize($data['email']));
+    $this->phone = trim(DB::sanitize($data['phone']));
+    $this->password = DB::sanitize($data['password']);
+    $this->role = trim(DB::sanitize($data['role']));
+    $this->status = trim(DB::sanitize($data['status']));
     
     $validate = $this->validateEdit($this->name, $this->email, $this->phone, $this->password, $this->role);
 
