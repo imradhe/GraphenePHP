@@ -108,6 +108,7 @@ function APIController($className){
 
 function csrf()
 {
+        
         if($_SERVER['REQUEST_METHOD'] == "GET") {
             // Generate CSRF token
             $token = bin2hex(random_bytes(32));
