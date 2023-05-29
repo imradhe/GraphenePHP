@@ -38,7 +38,7 @@ class DB
     {
         $set = "";
         foreach ($data as $column => $value) {
-            $set .= "$column = :$column, ";
+            $set .= "$column = '$value', ";
         }
         $set = rtrim($set, ", ");
         $query = "UPDATE $table SET $set WHERE $where";
@@ -119,6 +119,7 @@ class DB
         return $statement->fetchColumn();
     }
 
+    
     public static function truncate($table)
     {
         $query = "TRUNCATE TABLE $table";
