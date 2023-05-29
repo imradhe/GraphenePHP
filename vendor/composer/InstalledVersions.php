@@ -29,7 +29,7 @@ private static $installed = array (
     'aliases' => 
     array (
     ),
-    'reference' => '36d3d9f08669202f1145e33038e9454aaa5b7fd9',
+    'reference' => 'ca5bc299ba2eed5d3c38a90b2b082e74047dee30',
     'name' => '__root__',
   ),
   'versions' => 
@@ -41,16 +41,7 @@ private static $installed = array (
       'aliases' => 
       array (
       ),
-      'reference' => '36d3d9f08669202f1145e33038e9454aaa5b7fd9',
-    ),
-    'fpdf/fpdf' => 
-    array (
-      'pretty_version' => '1.85.0',
-      'version' => '1.85.0.0',
-      'aliases' => 
-      array (
-      ),
-      'reference' => '5ba6a7d4363174ac828a0c15cc1b4a8f845b1e16',
+      'reference' => 'ca5bc299ba2eed5d3c38a90b2b082e74047dee30',
     ),
     'mpdf/mpdf' => 
     array (
