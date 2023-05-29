@@ -262,7 +262,7 @@ function APIController($className){
 
 
 /**
-* api functions
+* API functions
 * */
 
 function sendRequest($url, $token = "", $method, $fields = ""){
