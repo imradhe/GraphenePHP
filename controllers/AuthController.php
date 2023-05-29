@@ -25,8 +25,10 @@ class Auth
     }
 
     public function login($email, $password){
+        DB::connect();
         $this->email = strtolower(trim(DB::sanitize($email)));
         $this->password = DB::sanitize($password);
+        DB::close();
 
         
         
@@ -180,7 +182,7 @@ class Auth
 
 public function getUser($email){
     DB::connect();
-    $getUser = DB::select('users', '*', "email = '$email'")->fetchAll();
+    $getUser = DB::select('users', '*', "email = 'DB::sanitize($email)'")->fetchAll();
     DB::close();
     if($getUser) return $getUser;
     else return false;
@@ -269,8 +271,8 @@ public function register($name, $email, $phone, $password, $role){
     $this->phone = trim(DB::sanitize($phone));
     $this->password = md5(DB::sanitize($password));
     $this->passwordWithoutMD5 =  DB::sanitize($password);
-    $this->role = trim(DB::sanitize($role));
-    
+    $this->role = trim(DB::sanitize($role));    
+    DB::close();
     
 
     $validate = $this->validate($this->name, $this->email, $this->phone, $this->passwordWithoutMD5, $this->role);
@@ -310,12 +312,14 @@ public function register($name, $email, $phone, $password, $role){
 }
 
 public function edit($data){
+    DB::connect();
     $this->name = trim(DB::sanitize($data['name']));
     $this->email = trim(DB::sanitize($data['email']));
     $this->phone = trim(DB::sanitize($data['phone']));
     $this->password = DB::sanitize($data['password']);
     $this->role = trim(DB::sanitize($data['role']));
     $this->status = trim(DB::sanitize($data['status']));
+    DB::close();
     
     $validate = $this->validateEdit($this->name, $this->email, $this->phone, $this->password, $this->role);
 
