@@ -408,6 +408,10 @@ function relativeTime($timestamp){
 }
 
 function slugify($text, string $divider = '-'){
+
+// $title = "This is the title";
+// slugify($title) returns "this-is-the-title"
+
   $text = preg_replace('~[^\pL\d]+~u', $divider, $text);
   $text = iconv('utf-8', 'us-ascii//TRANSLIT', $text);
   $text = preg_replace('~[^-\w]+~', '', $text);
