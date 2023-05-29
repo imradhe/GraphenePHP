@@ -51,10 +51,10 @@ function pageNotFound(){
 function locked($role = ['user']){
   controller("Auth");
   $auth = new Auth();
-  if(empty(getSession())){
+  if(empty(App::getSession())){
     redirectIfLocked(); 
     exit;
-  }elseif(!in_array(getUser()['role'], $role)){
+  }elseif(!in_array(App::getUser()['role'], $role)){
     return unauthorized();
   }
 }
@@ -101,13 +101,32 @@ function APIController($className){
 }
 
 
+
+
+
 /**
 * visitor analytical functions
 * */
 
 
+function getBrowser()
+{
+    $userAgent = isset($_SERVER['HTTP_SEC_CH_UA']) ? $_SERVER['HTTP_SEC_CH_UA'] : '';
+    $browserInfo = [];
+    
+    $browsers = explode(",", $userAgent);
+    
+    foreach($browsers as $browser){
+            if(!preg_match('/Chromium|Not-A\.Brand/', $browser)) {
+                $browser = explode(';',$browser);
+                $browserInfo['name'] = str_replace('"', "", $browser[0]);
+                $browserInfo['version'] = str_replace('"', "", substr($browser[1], 2));
+            }
+    }
 
-
+      
+    return $browserInfo;
+}
 
   function getOS()
   {
@@ -189,69 +208,13 @@ function APIController($className){
       $platform = 'windows';
     }
   
-    // Next get the name of the useragent yes seperately and for good reason
-    if(preg_match('/MSIE/i',$u_agent) && !preg_match('/Opera/i',$u_agent)){
-      $bname = 'Internet Explorer';
-      $ub = "MSIE";
-    }elseif(preg_match('/Firefox/i',$u_agent)){
-      $bname = 'Mozilla Firefox';
-      $ub = "Firefox";
-    }elseif(preg_match('/OPR/i',$u_agent)){
-      $bname = 'Opera';
-      $ub = "Opera";
-    }elseif(preg_match('/Chrome/i',$u_agent) && !preg_match('/Edge/i',$u_agent)){
-      $bname = 'Google Chrome';
-      $ub = "Chrome";
-      if(preg_match('/Edg/i',$u_agent)){
-        $bname = 'Edge';
-        $ub = "Edge";
-      }elseif(preg_match('/OPR/i',$u_agent)){
-        $bname = 'Opera';
-        $ub = "Opera";
-      }
-    }elseif(preg_match('/Safari/i',$u_agent) && !preg_match('/Edge/i',$u_agent)){
-      $bname = 'Apple Safari';
-      $ub = "Safari";
-    }elseif(preg_match('/Netscape/i',$u_agent)){
-      $bname = 'Netscape';
-      $ub = "Netscape";
-    }elseif(preg_match('/Edg/i',$u_agent)){
-      $bname = 'Edge';
-      $ub = "Edge";
-    }elseif(preg_match('/Trident/i',$u_agent)){
-      $bname = 'Internet Explorer';
-      $ub = "MSIE";
-    }
-  
-    // finally get the correct version number
-    $known = array('Version', $ub, 'other');
-    $pattern = '#(?<browser>' . join('|', $known) .
-  ')[/ ]+(?<version>[0-9.|a-zA-Z.]*)#';
-    if (!preg_match_all($pattern, $u_agent, $matches)) {
-      // we have no matching number just continue
-    }
-    // see how many we have
-    $i = count($matches['browser']);
-    if ($i != 1) {
-      //we will have two since we are not using 'other' argument yet
-      //see if version is before or after the name
-      if (strripos($u_agent,"Version") < strripos($u_agent,$ub)){
-          $version= $matches['version'][0];
-      }else {
-          $version= $matches['version'][1];
-      }
-    }else {
-      $version= $matches['version'][0];
-    }
-  
-    // check if we have a number
-    if ($version==null || $version=="") {$version=null;}
   
     return array(
       'userAgent' => $u_agent,
-      'browser'      => $bname,
+      'browserInfo' => $_SERVER['HTTP_SEC_CH_UA'],
+      'browser'      => getBrowser()['name'],
       'os' => getOS(),
-      'version'   => $version,
+      'version'   => getBrowser()['version'],
       'platform'  => $platform,
       'ip' => getIP()
     );
@@ -262,7 +225,7 @@ function APIController($className){
 
 
 /**
-* API functions
+* api functions
 * */
 
 function sendRequest($url, $token = "", $method, $fields = ""){
@@ -408,10 +371,6 @@ function relativeTime($timestamp){
 }
 
 function slugify($text, string $divider = '-'){
-
-// $title = "This is the title";
-// slugify($title) returns "this-is-the-title"
-
   $text = preg_replace('~[^\pL\d]+~u', $divider, $text);
   $text = iconv('utf-8', 'us-ascii//TRANSLIT', $text);
   $text = preg_replace('~[^-\w]+~', '', $text);
