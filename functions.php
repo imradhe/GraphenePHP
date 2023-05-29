@@ -102,6 +102,49 @@ function APIController($className){
 
 
 
+/**
+* CSRF functions
+* */
+
+function csrf()
+{
+        if($_SERVER['REQUEST_METHOD'] == "GET") {
+            // Generate CSRF token
+            $token = bin2hex(random_bytes(32));
+    
+            // Save the token in the session
+            $_SESSION['_token'] = $token;
+            
+        }
+            
+        
+        // Return the HTML for the CSRF field
+        echo '<input type="hidden" name="_token" value="' . $_SESSION['_token'] .'"> ';
+    
+    
+        
+}
+function csrfCheck()
+{
+    
+        
+        // Check if the provided token matches the stored token
+        
+        if (!empty($_SESSION['_token']) && hash_equals($_SESSION['_token'], $_POST['_token'])) {
+            // CSRF token is valid
+            
+            unset($_SESSION['_token']);
+            return true;
+        } else {
+            
+            unauthorized();
+            exit;
+        }
+        
+}
+
+
+
 
 
 /**
