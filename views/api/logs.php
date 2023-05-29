@@ -1,8 +1,9 @@
 <?php    
-require('db.php');
 
-$data = mysqli_query($con,"SELECT * FROM `logs`");
 
+DB::connect();
+$data = DB::select('logs')->fetchAll();
+DB::close();
 
 foreach ($data as $key => $value) {
     $res['data'][$key] = $value;
