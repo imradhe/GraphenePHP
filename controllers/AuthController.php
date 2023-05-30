@@ -196,91 +196,85 @@ public function getUsers(){
     else return false;
 }
 
-public function validateEdit($name, $email, $phone, $password, $role){
-    $errors = array();
-    $errorMsgs = array();
-    
-    $user = $this->getUser($email);
-    
-    if(empty($user)){
-        $errors['user'] = true;
-        $errorMsgs['user'] = "Invalid User";            
-    }else{
-        $errors['user'] = false;
-        $errorMsgs['user'] = ""; 
-    }
-
-    // Name Validation
-    if(empty($name)){
-        $errors['name'] = true;
-        $errorMsgs['name'] = "Name can't be empty";
-    }elseif(strlen($name)<=5){            
-        $errors['name'] = true;
-        $errorMsgs['name'] = "Name can't be less than 6 Characters";
-    }else{
-        $errors['name'] = false;
-        $errorMsgs['name'] = "";
-    }
-    
-    $phonePattern = "/^([6-9][0-9]{9})$/";
-
-    if(empty($phone)){
-      $errors['phone'] = true;
-      $errorMsgs['phone'] = "Phone can't be empty";
-    }elseif(preg_match($phonePattern, $phone)){
-      $errors['phone'] = false;   
-      $errorMsgs['phone'] = "";
-    }else{                   
-      $errors['phone'] = true;
-      $errorMsgs['phone'] = "Invalid Phone";       
-    }
-
-    // Password Validation
-    if(empty($password)){
-        $errors['password'] = true;
-        $errorMsgs['password'] = "Password can't be empty";
-    }elseif(strlen($password)<=5){            
-        $errors['password'] = true;
-        $errorMsgs['password'] = "Can't be less than 6 Characters";
-    }elseif(!preg_match('@\W|_@', $password)){            
-        $errors['password'] = true;
-        $errorMsgs['password'] = "Must Contain at least one special character";
-    }elseif(!preg_match('@[0-9]@', $password)){            
-        $errors['password'] = true;
-        $errorMsgs['password'] = "Must Contain at least one number";
-    }elseif(!preg_match('@[a-z]@', $password)){            
-        $errors['password'] = true;
-        $errorMsgs['password'] = "Must Contain at least one lowercase";
-    }elseif(!preg_match('@[A-Z]@', $password)){            
-        $errors['password'] = true;
-        $errorMsgs['password'] = "Must Contain at least one uppercase";
-    }else{
-        $errors['password'] = false;
-        $errorMsgs['password'] = "";
-    }
-
-    // Calculating error
-    $error = array_sum($errors);
-    return ['error' => $error, 'errorMsgs' => $errorMsgs];
-}
 
 public function register($name, $email, $phone, $password, $role){
     DB::connect();
     $this->name = trim(DB::sanitize($name));
     $this->email = strtolower(trim(DB::sanitize($email)));
     $this->phone = trim(DB::sanitize($phone));
-    $this->password = md5(DB::sanitize($password));
     $this->passwordWithoutMD5 =  DB::sanitize($password);
     $this->role = trim(DB::sanitize($role));    
     DB::close();
     
+    $fields = [
+    'name' => [
+        'value' => $this->name,
+        'rules' => [
+            [
+                'type' => 'required',
+                'message' => "Name can't be empty",
+            ],
+            [
+                'type' => 'minLength',
+                'message' => "Name can't be less than 6 characters",
+                'minLength' => 6,
+            ]
+        ]
+    ],
+    'email' => [
+        'value' => $this->email,
+        'rules' => [
+            [
+                'type' => 'required',
+                'message' => "Email can't be empty",
+            ],
+            [
+                'type' => 'email',
+                'message' => 'Email is invalid',
+            ],
+            [
+                'type' => 'custom',
+                'message' => 'Email already in use',
+                'validate' => function () {
+                    return !($this->check($this->email,$this->role));
+                },
+            ],
+        ],
+        ],
+        'phone' => [
+            'value' => $this->phone,
+            'rules' => [
+                [
+                    'type' => 'required',
+                    'message' => "Phone can't be empty",
+                ],
+                [
+                    'type' => 'phone',
+                    'message' => "Invalid Phone",
+                ]
+            ]
+        ],
+        'password' => [
+            'value' => $this->passwordWithoutMD5,
+            'rules' => [
+                [
+                    'type' => 'required',
+                    'message' => "Password can't be empty",
+                ],
+                [
+                    'type' => 'password',
+                    'message' => "Invalid Password",
+                ]
+            ]
+        ],
+    ];
 
-    $validate = $this->validate($this->name, $this->email, $this->phone, $this->passwordWithoutMD5, $this->role);
-
+    // Call the validateFields function
+    $validate = Validator::validate($fields);
     if($validate['error']){
         return ['error' => $validate['error'], 'errorMsgs' => $validate['errorMsgs']];
     }else{
-        
+        $this->password = md5($this->passwordWithoutMD5);
         $data = array(
             'name' => $this->name,
             'email' => $this->email,
@@ -308,8 +302,10 @@ public function register($name, $email, $phone, $password, $role){
             $userLogin = new Auth();
             $userLogin->login($this->email, $this->passwordWithoutMD5);
         }
-    }
+        }
+    
 }
+
 
 public function edit($data){
     DB::connect();
@@ -321,7 +317,59 @@ public function edit($data){
     $this->status = trim(DB::sanitize($data['status']));
     DB::close();
     
-    $validate = $this->validateEdit($this->name, $this->email, $this->phone, $this->password, $this->role);
+    
+    $fields = [
+        'name' => [
+            'value' => $this->name,
+            'rules' => [
+                [
+                    'type' => 'required',
+                    'message' => "Name can't be empty",
+                ],
+                [
+                    'type' => 'minLength',
+                    'message' => "Name can't be less than 6 characters",
+                    'minLength' => 6,
+                ]
+            ]
+        ],
+        'email' => [
+            'value' => $this->email,
+            'rules' => [
+                [
+                    'type' => 'required',
+                    'message' => "Email can't be empty",
+                ],
+                [
+                    'type' => 'email',
+                    'message' => 'Email is invalid',
+                ],
+                [
+                    'type' => 'custom',
+                    'message' => 'Invalid User',
+                    'validate' => function () {
+                        return ($this->check($this->email,$this->role));
+                    },
+                ],
+            ],
+            ],
+            'phone' => [
+                'value' => $this->phone,
+                'rules' => [
+                    [
+                        'type' => 'required',
+                        'message' => "Phone can't be empty",
+                    ],
+                    [
+                        'type' => 'phone',
+                        'message' => "Invalid Phone",
+                    ]
+                ]
+            ],
+        ];
+    
+        // Call the validateFields function
+        $validate = Validator::validate($fields);
 
     if($validate['error']){
         return ['error' => $validate['error'], 'errorMsgs' => $validate['errorMsgs']];
@@ -387,7 +435,7 @@ public function delete($email) {
     }else{
         return [
             'error' => true,
-            'errorMsg' => 'Failed to delete user ' . $this->error
+            'errorMsg' => 'Failed to delete user '
         ];
     }
 }
