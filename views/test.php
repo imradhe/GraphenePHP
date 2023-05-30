@@ -1,39 +1,18 @@
 <?php
-require('models/validator.php');
-$name = "Radhe Shyam";
-$email = "arun@abc.com";
-$fields = [
-    'name' => [
-        'value' => $name,
-        'rules' => [
-            [
-                'type' => 'required',
-                'message' => "Name can't be empty",
-            ],
-            [
-                'type' => 'minLength',
-                'message' => "Name can't be less than 6 characters",
-                'minLength' => 6,
-            ]
-        ]
-    ],
-    'email' => [
-        'value' => $email,
-        'rules' => [
-            [
-                'type' => 'required',
-                'message' => "Email can't be empty",
-            ],
-            [
-                'type' => 'email',
-                'message' => 'Email is invalid',
-            ],
-        ]
-    ]
+//errors(1);
+controller('Auth');
+$auth = new Auth;
+
+$data = [
+    'name' => 'Arun Devaputra',
+    'email' => 'contact@imradheaaaa.com',
+    'phone' => '8839929302',
+    'password' => 'Radhe@M022',
+    'role' => 'user'
 ];
+//$name, $email, $phone, $password, $role
 
-// Call the validateFields function
-$result = Validator::validate($fields);
+$result = $auth->testRegister($data['name'], $data['email'], $data['phone'], $data['password'], $data['role']);
 
-// Access the validation result
 echo json_encode($result);
+
