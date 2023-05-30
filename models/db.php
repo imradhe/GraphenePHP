@@ -175,7 +175,7 @@ class DB
 
     public static function sanitize($value)
     {
-
+        
         $sanitizedValue = self::$connection->quote($value);
         $sanitizedValue = substr($sanitizedValue, 1, -1);
 
