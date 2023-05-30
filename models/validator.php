@@ -62,6 +62,11 @@ class Validator{
                             $errorMessages[] = $message;
                         }
                         break;
+                    case 'password':
+                        if (!preg_match("/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/", $value)) {
+                            $errorMessages[] = $message;
+                        }
+                        break;
                     // Add more rule types as needed
                     default:
                         // Custom rule type
@@ -90,7 +95,7 @@ class Validator{
             return $acc + ($error ? 1 : 0);
         }, 0);
     
-        return ['error' => $errorCount > 0, 'errorMsgs' => $errorMsgs];
+        return ['error' => $errorCount > 0, 'errorMsgs' => $errorMsgs, 'fields' => 'dg'];
     }
     
 }
