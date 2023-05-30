@@ -15,5 +15,3 @@ date_default_timezone_set('Asia/Kolkata');
 $router = new Router($_SERVER);
 
 $router->run();
-
-
