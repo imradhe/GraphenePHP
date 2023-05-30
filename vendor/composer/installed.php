@@ -6,19 +6,19 @@
     'aliases' => 
     array (
     ),
-    'reference' => 'ca5bc299ba2eed5d3c38a90b2b082e74047dee30',
-    'name' => '__root__',
+    'reference' => '58389705e2f910d5a7ab69deb7377644c44f4a31',
+    'name' => 'graphenephp/graphenephp',
   ),
   'versions' => 
   array (
-    '__root__' => 
+    'graphenephp/graphenephp' => 
     array (
       'pretty_version' => 'dev-master',
       'version' => 'dev-master',
       'aliases' => 
       array (
       ),
-      'reference' => 'ca5bc299ba2eed5d3c38a90b2b082e74047dee30',
+      'reference' => '58389705e2f910d5a7ab69deb7377644c44f4a31',
     ),
     'mpdf/mpdf' => 
     array (
