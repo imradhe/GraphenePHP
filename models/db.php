@@ -2,7 +2,7 @@
 class DB
 {
     private static $connection;
-    
+
     public static function connect()
     {
         require('config.php');
@@ -19,16 +19,15 @@ class DB
         $columns = implode(", ", array_keys($data));
         $placeholders = ":" . implode(", :", array_keys($data));
         $query = "INSERT INTO $table ($columns) VALUES ($placeholders)";
-        
+
         $statement = self::$connection->prepare($query);
-        
+
         foreach ($data as $column => &$value) {
             $statement->bindParam(":$column", $value);
         }
-        
+
         $statement->execute();
-        
-        return $statement;
+
         return self::$connection->lastInsertId();
     }
 
@@ -119,7 +118,7 @@ class DB
         return $statement->fetchColumn();
     }
 
-    
+
     public static function truncate($table)
     {
         $query = "TRUNCATE TABLE $table";
@@ -175,7 +174,7 @@ class DB
 
     public static function sanitize($value)
     {
-        
+
         $sanitizedValue = self::$connection->quote($value);
         $sanitizedValue = substr($sanitizedValue, 1, -1);
 
