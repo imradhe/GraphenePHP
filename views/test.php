@@ -1,4 +1,7 @@
 <?php
+//errors(1);
+require('models/migrator.php');
+
 
 // Define the SQL table names and their corresponding SQL files
 $tables = [
