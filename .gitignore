@@ -1,5 +1,4 @@
 # Ignore node_modules folder
 config.php
 vendor/
-
-
+composer.lock
