@@ -180,5 +180,15 @@ class DB
 
         return $sanitizedValue;
     }
+    public static function errors()
+    {
+        $errors = [];
+        return $errorInfo = self::$connection->errorInfo();
+        if ($errorInfo[0] !== null) {
+            $errors[] = $errorInfo[0];
+        }
+
+        return $errors;
+    }
 
 }
