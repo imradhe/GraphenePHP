@@ -8,6 +8,7 @@ errors(0);
 controller('App');
 require('models/db.php');
 require('models/validator.php');
+require('models/migrator.php');
 require('router.php');
 
 date_default_timezone_set('Asia/Kolkata');
