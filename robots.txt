@@ -1,3 +1,0 @@
-User-agent:*
-Disallow: 
-Sitemap: http://localhost/GraphenePHP/sitemap.xml
