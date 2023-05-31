@@ -1,41 +1,79 @@
 <?php
-$config = [
-        'APP_NAME' => 'GraphenePHP',
-        'APP_TITLE' => 'GraphenePHP',
-        'APP_URL' => 'http://localhost/',
-        // https://example.com/
-        'APP_SLUG' => 'graphenephp',
-        // full url: http://localhost/graphenephp
+/*
+ * -----------------------------------------------------------------------------
+ * Main entry point of GraphenePHP
+ * -----------------------------------------------------------------------------
+ *
+ * This file serves as the main entry point for your GraphenePHP application.
+ * It initializes the necessary components and sets up the routing system to
+ * handle incoming requests.
+ *
+ * Author: Radhe Shyam
+ * Version: 1.0
+ *
+ * -----------------------------------------------------------------------------
+ */
 
-        // If the Graphene App is not hosted in the main directory of the domain add the directory name in APP_SLUG
+session_start();
 
-        'DB_CONNECTION' => 'mysql',
-        'DB_HOST' => 'localhost',
-        'DB_PORT' => '3306',
-        'DB_DATABASE' => 'DATABASE_NAME',
-        'DB_USERNAME' => 'USERNAME',
-        'DB_PASSWORD' => 'PASSWORD',
+// -----------------------------------------------------------------------------
+// Configuration & Setup
+// -----------------------------------------------------------------------------
+require('config.php');
 
-        'SMTP_DRIVER' => 'smtp',
-        'SMTP_HOST' => 'DOMAIN',
-        'SMTP_PORT' => 'PORT',
-        'SMTP_USERNAME' => 'USERNAME',
-        'SMTP_PASSWORD' => 'PASSWORD',
-        'SMTP_ENCRYPTION' => 'tls',
+// -----------------------------------------------------------------------------
+// Check if database details are empty or invalid
+// -----------------------------------------------------------------------------
+if (empty($config['DB_HOST']) || empty($config['DB_USERNAME']) || empty($config['DB_PASSWORD']) || empty($config['DB_DATABASE'])) {
+    // Redirect to a page with a form to add database details
+    header('Location: /setup-db.php');
+    exit;
+}
 
-        //SEO
-        'APP_DESC' => 'A Simple and light-weight PHP MVC Framework',
-        'APP_SHORT_TITLE' => 'GraphenePHP',
-        'APP_AUTHOR' => 'Radhe Shyam Salopanthula',
-        'APP_ICON' => 'assets/img/GraphenePHPIcon.png',
-        // Size 1000x1000
-        'APP_OG_ICON' => 'assets/img/GraphenePHP.png',
-        // Size 600x300
-        'APP_OG_ICON_MOBILE' => 'assets/img/GraphenePHP.png',
-        // Size 700x700
-        'APP_THEME_COLOR' => '#FFFFFF',
-        // Color in HEX Code
-        'APP_KEYWORDS' => 'GraphenePHP App, Radhe Shyam Salopanthula',
-        // Max 20 Keywords 
-        'APP_TWITTER_CREATOR' => '@imraadhe', // Twitter Username
-];
+// -----------------------------------------------------------------------------
+// Headers
+// -----------------------------------------------------------------------------
+require('headers.php');
+
+// -----------------------------------------------------------------------------
+// Global Functions
+// -----------------------------------------------------------------------------
+require('functions.php');
+
+// -----------------------------------------------------------------------------
+// Disable Errors and Debugging
+// -----------------------------------------------------------------------------
+errors(0);
+
+// -----------------------------------------------------------------------------
+// AppController
+// -----------------------------------------------------------------------------
+controller('App');
+
+// -----------------------------------------------------------------------------
+// Database Class
+// -----------------------------------------------------------------------------
+require('models/db.php');
+
+// -----------------------------------------------------------------------------
+// Validator Class
+// -----------------------------------------------------------------------------
+require('models/validator.php');
+
+// -----------------------------------------------------------------------------
+// Database Migrator Class
+// -----------------------------------------------------------------------------
+require('models/migrator.php');
+
+// -----------------------------------------------------------------------------
+// Main Router
+// -----------------------------------------------------------------------------
+require('router.php');
+
+date_default_timezone_set('Asia/Kolkata'); 
+
+// -----------------------------------------------------------------------------
+// Create a Router Instance and Run the Application
+// -----------------------------------------------------------------------------
+$router = new Router($_SERVER);
+$router->run();
