@@ -11,8 +11,8 @@ $data = [
     'role' => 'user'
 ];
 //$name, $email, $phone, $password, $role
+$result = $auth->register($data['name'], $data['email'], $data['phone'], $data['password'], $data['role']);
 
-$result = $auth->testRegister($data['name'], $data['email'], $data['phone'], $data['password'], $data['role']);
 
 echo json_encode($result);
 

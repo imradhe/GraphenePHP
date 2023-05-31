@@ -2,6 +2,20 @@
 class Auth
 {
     protected $db;
+    protected $loginID;
+    protected $currentLog;
+    protected $email;
+    protected $password;
+    protected $ip;
+    protected $os;
+    protected $browser;
+    protected $name;
+    protected $phone;
+    protected $passwordWithoutMD5;
+    protected $role;
+    protected $status;
+    protected $error;
+    protected $errorMsgs;
     protected $errors;
 
     public function __construct()
@@ -25,7 +39,7 @@ class Auth
             return false;
         }
     }
-
+    
     public function login($email, $password)
     {
         DB::connect();
@@ -386,4 +400,3 @@ class Auth
     }
 
 } 
-
