@@ -22,6 +22,9 @@
     "path": "views/auth/logout.php",
     "pattern": null
   },
+  "migrate" : {
+    "path" : "views/migrate.php"
+  },
   "api/example": {
     "path": "views/api/example.php",
     "pattern": null
