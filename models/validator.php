@@ -1,23 +1,24 @@
 <?php
-class Validator{
+class Validator
+{
 
 
     public static function validate($fields)
     {
         $errors = [];
         $errorMsgs = [];
-    
+
         foreach ($fields as $fieldName => $fieldData) {
             $value = $fieldData['value'];
             $rules = $fieldData['rules'];
             $callbacks = $fieldData['callbacks'];
             $errorMessages = [];
-    
+
             // Apply rules validation
             foreach ($rules as $rule) {
                 $ruleType = $rule['type'];
                 $message = $rule['message'];
-    
+
                 switch ($ruleType) {
                     case 'required':
                         if (empty($value)) {
@@ -77,7 +78,7 @@ class Validator{
                         break;
                 }
             }
-    
+
             // Apply callback validation
             foreach ($callbacks as $callback) {
                 $validateCallback = $callback['validate'];
@@ -86,16 +87,16 @@ class Validator{
                     $errorMessages[] = $message;
                 }
             }
-    
+
             $errors[$fieldName] = count($errorMessages) > 0;
             $errorMsgs[$fieldName] = $errorMessages;
         }
-    
+
         $errorCount = array_reduce($errors, function ($acc, $error) {
             return $acc + ($error ? 1 : 0);
         }, 0);
-    
+
         return ['error' => $errorCount > 0, 'errorMsgs' => $errorMsgs, 'fields' => 'dg'];
     }
-    
+
 }

@@ -10,5 +10,9 @@ CREATE TABLE logs (
     FOREIGN KEY (email) REFERENCES users(email),
     PRIMARY KEY (loginID)
 );
-
-INSERT INTO users (`name`, `email`, `password`) VALUES ("Arun", "arun@graphenephp.com","900150983cd24fb0d6963f7d28e17f72")
+INSERT INTO users (`name`, `email`, `password`)
+VALUES (
+        "Arun",
+        "arun@graphenephp.com",
+        "900150983cd24fb0d6963f7d28e17f72"
+    )
