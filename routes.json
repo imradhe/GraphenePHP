@@ -1,50 +1,50 @@
 {
-    "" : { 
-        "path" : "views/index.php", 
-        "pattern" : null
-    },
-    "test" : {
-        "path" : "views/test.php", 
-        "pattern" : "/^[a-z][a-z0-9_.]{1,19}+$/"
-    },
-    "test/hello" : {
-        "path": "views/test.php"
-    },
-    "login" : {
-        "path" : "views/auth/login.php", 
-        "pattern" : null
-    },
-    "register" : {
-        "path" : "views/auth/register.php", 
-        "pattern" : null
-    },
-    "logout" : {
-        "path" : "views/auth/logout.php", 
-        "pattern" : null
-    },
-    "api/example" : {
-        "path" : "views/api/example.php", 
-        "pattern" : null
-    },
-    "api/logs" : {
-        "path" : "views/api/logs.php", 
-        "pattern" : null
-    },
-   "api/test" : {
-        "path" : "views/api/test.php", 
-        "pattern" : null
-    },
-    
-   "api/login" :{
-        "path" : "views/api/login.php", 
-        "pattern" : null
-    },
-    "api/logout" :{
-        "path" : "views/api/logout.php", 
-        "pattern" : null
-    },
-    "api/routes" :{
-        "path" : "views/api/routes.php", 
-        "pattern" : null
-    }
+  "": {
+    "path": "views/index.php",
+    "pattern": null
+  },
+  "test": {
+    "path": "views/test.php",
+    "pattern": "/^[a-z][a-z0-9_.]{1,19}+$/"
+  },
+  "test/hello": {
+    "path": "views/test.php"
+  },
+  "login": {
+    "path": "views/auth/login.php",
+    "pattern": null
+  },
+  "register": {
+    "path": "views/auth/register.php",
+    "pattern": null
+  },
+  "logout": {
+    "path": "views/auth/logout.php",
+    "pattern": null
+  },
+  "api/example": {
+    "path": "views/api/example.php",
+    "pattern": null
+  },
+  "api/logs": {
+    "path": "views/api/logs.php",
+    "pattern": null
+  },
+  "api/test": {
+    "path": "views/api/test.php",
+    "pattern": null
+  },
+
+  "api/login": {
+    "path": "views/api/login.php",
+    "pattern": null
+  },
+  "api/logout": {
+    "path": "views/api/logout.php",
+    "pattern": null
+  },
+  "api/routes": {
+    "path": "views/api/routes.php",
+    "pattern": null
+  }
 }

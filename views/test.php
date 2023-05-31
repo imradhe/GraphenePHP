@@ -15,4 +15,3 @@ $result = $auth->register($data['name'], $data['email'], $data['phone'], $data['
 
 
 echo json_encode($result);
-
