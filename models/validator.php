@@ -1,8 +1,25 @@
 <?php
+/**
+ * GraphenePHP Validator Class
+ *
+ * This class provides validation functionalities for form fields.
+ * It allows defining validation rules and callbacks for each field,
+ * and returns error messages for invalid fields.
+ *
+ * @package GraphenePHP
+ * @version 1.0
+ */
+
 class Validator
 {
-
-
+    /**
+     * Validate form fields
+     *
+     * This method validates the provided form fields based on the specified rules and callbacks.
+     *
+     * @param array $fields An associative array of form fields with their values, rules, and callbacks.
+     * @return array An array containing the validation result, error messages, and fields.
+     */
     public static function validate($fields)
     {
         $errors = [];
@@ -96,7 +113,10 @@ class Validator
             return $acc + ($error ? 1 : 0);
         }, 0);
 
-        return ['error' => $errorCount > 0, 'errorMsgs' => $errorMsgs, 'fields' => 'dg'];
+        return [
+            'error' => $errorCount > 0,
+            'errorMsgs' => $errorMsgs,
+            'fields' => 'dg'
+        ];
     }
-
 }
