@@ -1,4 +1,8 @@
 <?php
+
+/**
+ * The Auth class handles authentication and user management.
+ */
 class Auth
 {
     protected $db;
@@ -18,11 +22,19 @@ class Auth
     protected $errorMsgs;
     protected $errors;
 
+     /**
+     * Auth constructor.
+     */
     public function __construct()
     {
         $this->errors = "";
     }
 
+     /**
+     * Checks the validity of the session.
+     *
+     * @return array|false The current session information if valid, or false otherwise.
+     */
     // Check the session validity
     public function checkSession()
     {
@@ -40,6 +52,13 @@ class Auth
         }
     }
 
+    /**
+     * Authenticates the user with the provided email and password.
+     *
+     * @param string $email The user's email.
+     * @param string $password The user's password.
+     * @return array The result of the login operation.
+     */
     public function login($email, $password)
     {
         DB::connect();
@@ -51,8 +70,8 @@ class Auth
 
         DB::connect();
         $loginQuery = DB::select('users', '*', "email = '$this->email'")->fetchAll()[0];
-        //return gettype($loginQuery->fetchAll());
         DB::close();
+
         // Check if user exists
         if ($loginQuery) {
             // Check if password is correct
@@ -97,7 +116,13 @@ class Auth
         return ['error' => true, 'errorMsg' => $this->errors];
     }
 
-    // Check if email exists
+     /**
+     * Checks if an email exists for a specific role.
+     *
+     * @param string $email The email to check.
+     * @param string $role The role to check against.
+     * @return bool Returns true if the email exists for the specified role, false otherwise.
+     */
     public function check($email, $role)
     {
         DB::connect();
@@ -105,7 +130,15 @@ class Auth
         DB::close();
         return count($result);
     }
+    
 
+    
+    /**
+     * Get a  user with email.
+     *
+     * @param string $email The email of the user.
+     * @return array The result of the select query.
+     */
     public function getUser($email)
     {
         DB::connect();
@@ -114,9 +147,15 @@ class Auth
         if ($getUser)
             return $getUser;
         else
-            return false;
+            return ['error' => true];
     }
 
+
+    
+    /**
+     * Get all users.
+     * @return array The result of the select query.
+     */
     public function getUsers()
     {
         DB::connect();
@@ -125,10 +164,17 @@ class Auth
         if ($users)
             return $users;
         else
-            return false;
+        return ['error' => true];
     }
 
 
+    
+    /**
+     * Registers a new user.
+     *
+     * @param array $userData The user data to be registered.
+     * @return array The result of the registration operation.
+     */
     public function register($name, $email, $phone, $password, $role)
     {
         // Sanitize fields
@@ -237,13 +283,19 @@ class Auth
                 return ['error' => $this->error, 'errorMsgs' => $this->errorMsgs];
             } else {
                 $userLogin = new Auth();
-                $userLogin->login($this->email, $this->passwordWithoutMD5);
+                return $userLogin->login($this->email, $this->passwordWithoutMD5);
             }
         }
 
     }
 
 
+        /**
+     * Edits user information.
+     *
+     * @param array $data The user data to be edited.
+     * @return array The result of the edit operation.
+     */
     public function edit($data)
     {
         DB::connect();
@@ -255,7 +307,7 @@ class Auth
         $this->status = trim(DB::sanitize($data['status']));
         DB::close();
 
-
+        // Define validation rules for fields
         $fields = [
             'name' => [
                 'value' => $this->name,
@@ -348,9 +400,14 @@ class Auth
         }
     }
 
+    /**
+     * Deletes a user account.
+     *
+     * @param string $email The email of the user to be deleted.
+     * @return array The result of the delete operation.
+     */
     public function delete($email)
     {
-
         if (!$this->getUser($email)) {
             return [
                 'error' => true,
@@ -379,12 +436,13 @@ class Auth
         }
     }
 
-    // Logout Function
+    /**
+     * Logs out the user.
+     */
     public function logout()
     {
         $loginID = App::getSession()['loginID'];
         $time = date_create()->format('Y-m-d H:i:s');
-
 
         $data = array(
             'loggedout' => 1,
@@ -401,5 +459,6 @@ class Auth
             header("Location:" . home() . "login?loggedout=true");
         }
     }
+
 
 }
