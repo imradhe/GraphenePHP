@@ -374,6 +374,29 @@ function getAPIToken()
 }
 
 
+function jsonResponse($code = 200, $message = null)
+{
+    header_remove();
+    http_response_code($code);
+    header("Access-Control-Allow-Origin: *");
+    header('Cache-Control: no-cache, must-revalidate');
+    header('Content-Type: application/json');
+    header('Access-Control-Allow-Credentials: true');
+   
+    $status = array(
+        200 => '200 OK',
+        400 => '400 Bad Request',
+        422 => 'Unprocessable Entity',
+        500 => '500 Internal Server Error'
+    );
+    header('Status: ' . $status[$code]);
+    $responseArray = array(
+        'status' => $code < 300
+    );
+    return json_encode(array_merge($responseArray, $message));
+}
+
+
 /**
  * encryption functions
  * */
