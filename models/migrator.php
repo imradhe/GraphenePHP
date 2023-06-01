@@ -1,16 +1,35 @@
 <?php
+/**
+ * GraphenePHP Migrator Class
+ *
+ * This class provides functionality to migrate database tables.
+ * It connects to the database, checks if tables already exist,
+ * reads SQL files, and executes the SQL queries to create tables.
+ *
+ * @package GraphenePHP
+ * @version 1.0
+ */
 
 class Migrator
 {
+    /**
+     * Migrate tables
+     *
+     * This method migrates the provided tables by executing SQL queries.
+     *
+     * @param array $tables An associative array of tables and their corresponding SQL files.
+     * @return array An array containing the migration output, error status, and error messages.
+     */
     public static function migrate($tables)
     {
         $errors = [];
         $error = false;
         $errorMsgs = [];
         $output = [];
+
         // Connect to the database
         DB::connect();
-        
+
         foreach ($tables as $table => $sqlFile) {
             array_push($output, "Migrating table: $table");
 
@@ -26,16 +45,21 @@ class Migrator
 
                 // Execute the SQL query
                 DB::execute($sql);
-                array_push($output, "Migratind table: $table");
+                array_push($output, "Migrating table: $table");
             }
         }
 
         // Close the database connection
         DB::close();
 
-        foreach($errors as $count)
-        $error += $count;
-        
-        return ['output' => $output, 'error' => ($error)? true : false, 'errorMsgs' => $errorMsgs];
+        foreach ($errors as $count) {
+            $error += $count;
+        }
+
+        return [
+            'output' => $output,
+            'error' => ($error) ? true : false,
+            'errorMsgs' => $errorMsgs
+        ];
     }
 }
