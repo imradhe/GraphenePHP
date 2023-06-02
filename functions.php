@@ -289,31 +289,33 @@ function getDevice()
  * api functions
  * */
 
-function sendRequest($url, $token = "", $method, $fields = "")
-{
-  $curl = curl_init();
-
-  curl_setopt_array($curl, array(
-    CURLOPT_URL => $url,
-    CURLOPT_RETURNTRANSFER => true,
-    CURLOPT_ENCODING => '',
-    CURLOPT_MAXREDIRS => 10,
-    CURLOPT_TIMEOUT => 0,
-    CURLOPT_FOLLOWLOCATION => true,
-    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-    CURLOPT_CUSTOMREQUEST => $method,
-    CURLOPT_HTTPHEADER => array(
-      'Authorization: Bearer ' . $token
-    ),
-    CURLOPT_POSTFIELDS => $fields
-  )
-  );
-  $response = curl_exec($curl);
-
-  curl_close($curl);
-
-  return $response;
-}
+ function sendRequest($url, $token = "", $method, $fields = "")
+ {
+   $curl = curl_init();
+ 
+   curl_setopt_array($curl, array(
+     CURLOPT_URL => $url,
+     CURLOPT_RETURNTRANSFER => true,
+     CURLOPT_ENCODING => '',
+     CURLOPT_MAXREDIRS => 10,
+     CURLOPT_TIMEOUT => 0,
+     CURLOPT_FOLLOWLOCATION => true,
+     CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+     CURLOPT_CUSTOMREQUEST => $method,
+     CURLOPT_HTTPHEADER => array(
+       'Authorization: Bearer ' . $token,
+       'Content-Type: application/json'
+     ),
+     CURLOPT_POSTFIELDS => json_encode($fields) // Encode the fields as JSON
+   ));
+ 
+   $response = curl_exec($curl);
+ 
+   curl_close($curl);
+ 
+   return $response;
+ }
+ 
 
 
 
@@ -374,7 +376,7 @@ function getAPIToken()
 }
 
 
-function jsonResponse($code = 200, $message = null)
+function jsonResponse($message = null, $code = 200)
 {
     header_remove();
     http_response_code($code);
@@ -393,7 +395,7 @@ function jsonResponse($code = 200, $message = null)
     $responseArray = array(
         'status' => $code < 300
     );
-    return json_encode(array_merge($responseArray, $message));
+    return json_encode($message);
 }
 
 
