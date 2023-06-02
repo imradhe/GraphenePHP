@@ -6,7 +6,7 @@ A simple and light-weight PHP framework.
 
 
 ```bash
-git clone --branch stable-(1.0) https://github.com/imradhe/GraphenePHP.git
+git clone https://github.com/imradhe/GraphenePHP.git [project_name]
 ```
 
 # Configuration
