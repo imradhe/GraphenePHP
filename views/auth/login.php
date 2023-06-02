@@ -98,7 +98,7 @@ if (isset($_POST['btn-login'])) {
       <button class="btn btn-lg btn btn-graphene btn-block" id="btn-login" name="btn-login" type="login">Sign
         in</button>
 
-      <p class="mt-3">Don't Have an account? <a href="<?php echo route('register'); ?>">Register Now</a></p>
+      <p class="mt-3">Don't Have an account? <a href="<?php echo route('register').queryString(); ?>">Register Now</a></p>
   </form>
 
   <script>
