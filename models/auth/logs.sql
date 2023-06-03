@@ -16,5 +16,5 @@ VALUES (
         "arun@graphenephp.com",
         "900150983cd24fb0d6963f7d28e17f72",
         "9121325466",
-        "admin",
+        "admin"
     )
