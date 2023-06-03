@@ -1,10 +1,11 @@
 <?php
 if (isset($_POST['btn-login'])) {
-  csrfCheck();
+
+ // csrfCheck();
   controller("Auth");
   $auth = new Auth();
   $user = $auth->login($_POST['email'], $_POST['password']);
-  echo json_encode(($user));
+  
 } else {
   if (App::getSession())
     header("Location:" . home());
@@ -75,9 +76,9 @@ if (isset($_POST['btn-login'])) {
           <?php echo "Logged Out Successfully"; ?>
         </div>
       <?php } ?>
-      <?php if (!empty($auth->errors)) { ?>
+      <?php if ($user['error']) { ?>
         <div class="alert alert-danger" role="alert">
-          <?php echo $auth->errors; ?>
+          <?php echo $user['errorMsg']; ?>
         </div>
       <?php } ?>
 
