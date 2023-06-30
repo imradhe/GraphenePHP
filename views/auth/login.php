@@ -1,4 +1,5 @@
 <?php
+$config['APP_TITLE'] = "Login | ".$config['APP_TITLE'];
 if (isset($_POST['btn-login'])) {
 
  // csrfCheck();
@@ -13,8 +14,6 @@ if (isset($_POST['btn-login'])) {
 ?>
 <!doctype html>
 <html lang="en">
-<title>Login | GraphenePHP</title>
-
 <?php include("views/partials/head.php"); ?>
 
 <style>

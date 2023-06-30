@@ -1,4 +1,5 @@
 <?php
+$config['APP_TITLE'] = "Register | ".$config['APP_TITLE'];
 DB::connect();
 $customers = DB::select('users')->fetchAll();
 DB::close();
@@ -17,8 +18,6 @@ if (isset($_POST['btn-register'])) {
 <!doctype html>
 <html lang="en">
 
-<head>
-  <title>User Registration | GraphenePHP</title>
   <style>
     html,
     body {
@@ -74,7 +73,6 @@ if (isset($_POST['btn-register'])) {
       cursor: pointer;
     }
   </style>
-</head>
 
 <?php include("views/partials/head.php"); ?>
 
