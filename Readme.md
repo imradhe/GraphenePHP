@@ -35,5 +35,8 @@ APP_SLUG = [Directory name]
 
 If you want to know the status and get updates you can follow me on [Instagram @imraadhe](https://instagram.com/imraadhe)
 
+# Collaborators
+
+1. @karanamakhildatta
 
 
