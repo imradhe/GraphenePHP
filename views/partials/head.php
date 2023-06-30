@@ -9,7 +9,7 @@
     <meta name="robots" content="follow" />
     <link rel="canonical" href="<?php echo url(); ?>" />
     <link rel="icon" href="<?php echo route($config['APP_ICON']); ?>" />
-    <meta name="theme-color" content="#E1DEEF" />
+    <meta name="theme-color" content="<?php echo $config['APP_THEME_COLOR'];?>" />
 
     <!-- OPEN GRAPH -->
     <meta property="og:type" content="website" />
