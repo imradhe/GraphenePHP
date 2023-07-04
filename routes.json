@@ -7,8 +7,9 @@
     "path": "views/test.php",
     "pattern": "/^[a-z][a-z0-9_.]{1,19}+$/"
   },
-  "test/hello": {
-    "path": "views/test.php"
+  "{chapter}/verse/{verse}": {
+    "path": "views/test.php",
+    "pattern": true
   },
   "login": {
     "path": "views/auth/login.php",
