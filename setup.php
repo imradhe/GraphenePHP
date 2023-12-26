@@ -79,6 +79,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
             // Assuming you have a function to read the existing config.php
             require('config_example.php');
+            $config['APP_SLUG'] = basename(getcwd());
             ?>
             <div class="mb-3">
                 <label for="APP_URL" class="form-label">App URL</label>

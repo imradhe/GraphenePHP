@@ -8,14 +8,14 @@
  * SMTP configuration for email, SEO settings, and more.
  *
  * @package GraphenePHP
- * @version 2.0.0
+ * @version 1.0.0
  */
 
 $config = [
     'APP_NAME' => 'GraphenePHP App',
     'APP_TITLE' => 'GraphenePHP',
     'APP_URL' => 'http://localhost/',
-    'APP_SLUG' => 'graphenephp',
+    'APP_SLUG' => 'GraphenePHP',
     'DB_CONNECTION' => 'mysql',
     'DB_HOST' => 'localhost',
     'DB_PORT' => '3306',
