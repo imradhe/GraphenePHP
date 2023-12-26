@@ -1,9 +1,11 @@
+<h1>GraphenePHP</h1>
+
 A simple and light-weight PHP framework.
 ![GraphenePHP Home Screen](/assets/img/ss.png "GraphenePHP Home Screen")
 
 # Installation
 
-## 1. Create GraphenePHP Project (Git Clone the repository)
+## Create GraphenePHP Project (Git Clone the repository)
 
 ```bash
 git clone https://github.com/imradhe/GraphenePHP.git
@@ -11,15 +13,14 @@ git clone https://github.com/imradhe/GraphenePHP.git
 
 # Configuration
 
-## 2. Copy config.php file
-```bash
-cp config_example.php config.php
-```
+## Finish Setup
+Go to the app url to setup
+![GraphenePHP Configuraion](/assets/img/configuraion.png "GraphenePHP Configuraion")
 
-## 3. Create a new empty database in phpmyadmin
 
-## 4. Setup your app with config.php
-Modify `config.php` file and start your server to run the app.
+
+## Modify config.php
+Modify `config.php` file to update SEO and other meta data
 
 if you are testing it on localhost, 
 
@@ -30,10 +31,6 @@ APP_SLUG = [Directory name]
 > i.e. if directory path is C:\xampp\htdocs\MyCoolApp <br>
 Then <br>
 > APP_SLUG = MyCoolApp
-## 5. Run DB Migrations
-To run Database Migrations, Go to the following route and it will automatically run the migrations.
-
-``` /migrate ```
 
 # Directory Structure
 ```
