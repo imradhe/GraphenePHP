@@ -18,7 +18,7 @@
                 <i class="bi bi-person-circle"></i> <?php echo App::getUser()['name'];?>
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <li><a class="dropdown-item" href="<?php echo route('profile');?>">Profile</a></li>
+                <li><a class="dropdown-item disabled" href="<?php echo route('profile');?>">Profile</a></li>
                 <li><hr class="dropdown-divider"></li>
                 <li><a class="dropdown-item" aria-current="page" href="<?php echo route('logout');?>">Logout</a></li>
             </ul>
