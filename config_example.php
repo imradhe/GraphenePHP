@@ -8,7 +8,7 @@
  * SMTP configuration for email, SEO settings, and more.
  *
  * @package GraphenePHP
- * @version 1.0.0
+ * @version 2.0.0
  */
 
 $config = [
