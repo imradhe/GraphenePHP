@@ -7,7 +7,7 @@
  * reads SQL files, and executes the SQL queries to create tables.
  *
  * @package GraphenePHP
- * @version 1.0
+ * @version 2.0.0
  */
 class Migrator
 {   

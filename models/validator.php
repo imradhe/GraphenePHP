@@ -7,7 +7,7 @@
  * and returns error messages for invalid fields.
  *
  * @package GraphenePHP
- * @version 1.0
+ * @version 2.0.0
  */
 
 class Validator
