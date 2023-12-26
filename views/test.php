@@ -1,4 +1,4 @@
 <?php
 
-redirect('https://hello.com');
+echo $_REQUEST['username'];
 ?>
