@@ -1,17 +1,21 @@
 <?php
 $config['APP_TITLE'] = "Register | ".$config['APP_TITLE'];
 DB::connect();
-$customers = DB::select('users')->fetchAll();
+$customers = DB::select('users', '*', "status <> 'deleted'")->fetchAll();
 DB::close();
 
-if (isset($_POST['btn-register'])) {
+if (isset($_REQUEST['btn-register'])) {
   csrfCheck();
   controller("Auth");
   $user = new Auth();
-  $register = $user->register($_POST['name'], $_POST['email'], $_POST['phone'], $_POST['password'], 'user');
+  $register = $user->register($_REQUEST['name'], $_REQUEST['email'], $_REQUEST['phone'], $_REQUEST['password'], 'user');
+  if ($register){ 
+    $user = new Auth();
+    $user->login($_REQUEST['email'], $_REQUEST['password']);
+  }
 } else {
-  if (App::getUser()['role'] == 'user')
-    header("Location:" . home());
+  if (App::getSession())
+    header("Location:" . route('admin'));
 }
 
 ?>
@@ -89,20 +93,20 @@ if (isset($_POST['btn-register'])) {
 
       <div class="mb-3">
         <input name="name" type="name" id="name" class="form-control" placeholder="Name"
-          value="<?php echo (!empty($_POST['name'])) ? $_POST['name'] : ''; ?>" required>
+          value="<?php echo (!empty($_REQUEST['name'])) ? $_REQUEST['name'] : ''; ?>" required>
         <strong id="nameMsg" class="text-danger errorMsg my-2 fw-bolder"></strong>
       </div>
 
       <div class="mb-3">
         <input name="email" type="email" id="email" class="form-control" placeholder="Email"
-          value="<?php echo (!empty($_POST['email'])) ? $_POST['email'] : ''; ?>" required>
+          value="<?php echo (!empty($_REQUEST['email'])) ? $_REQUEST['email'] : ''; ?>" required>
         <strong id="emailMsg" class="text-danger errorMsg my-2 fw-bolder"></strong>
       </div>
 
 
       <div class="mb-3">
         <input name="phone" type="phone" id="phone" class="form-control" placeholder="phone"
-          value="<?php echo (!empty($_POST['phone'])) ? $_POST['phone'] : ''; ?>" required>
+          value="<?php echo (!empty($_REQUEST['phone'])) ? $_REQUEST['phone'] : ''; ?>" required>
         <strong id="phoneMsg" class="text-danger errorMsg my-2 fw-bolder"></strong>
       </div>
 
@@ -111,12 +115,12 @@ if (isset($_POST['btn-register'])) {
       </div>
       <div class="mb-3">
         <input type="password" name="password" id="password" class="form-control" placeholder="Password"
-          value="<?php echo (!empty($_POST['password'])) ? $_POST['password'] : ''; ?>" required>
+          value="<?php echo (!empty($_REQUEST['password'])) ? $_REQUEST['password'] : ''; ?>" required>
         <strong id="passwordMsg" class="text-danger errorMsg my-2 fw-bolder"></strong>
       </div>
 
 
-      <button class="btn btn-lg btn-graphene btn-block" id="btn-register" name="btn-register" type="register"
+      <button class="btn btn-lg btn-graphene btn-block rounded-pill" id="btn-register" name="btn-register" type="register"
         disabled>Register</button>
 
       <p class="mt-3">Already Have an account? <a href="<?php echo route('login'); ?>">Login Now</a></p>
@@ -168,7 +172,7 @@ if (isset($_POST['btn-register'])) {
         checkErrors()
         nameMsg.innerText = "Name can't be empty"
         name.classList.add("is-invalid")
-      } else if (nameValue.length <= 5) {
+      } else if (nameValue.trim().length <= 5) {
         nameError = true
         checkErrors()
         nameMsg.innerText = "Name can't be less than 6 Characters"
