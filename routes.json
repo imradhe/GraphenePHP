@@ -1,54 +1,42 @@
 {
   "": {
-    "path": "views/index.php",
-    "pattern": null
+    "path": "views/index.php"
   },
   "test": {
-    "path": "views/test.php",
-    "pattern": "/^[a-z][a-z0-9_.]{1,19}+$/"
+    "path": "views/test.php"
   },
-  "{chapter}/verse/{verse}": {
-    "path": "views/test.php",
-    "pattern": true
+  "user/{username}": {
+    "path": "views/test.php"
   },
   "login": {
-    "path": "views/auth/login.php",
-    "pattern": null
+    "path": "views/auth/login.php"
   },
   "register": {
-    "path": "views/auth/register.php",
-    "pattern": null
+    "path": "views/auth/register.php"
   },
   "logout": {
-    "path": "views/auth/logout.php",
-    "pattern": null
+    "path": "views/auth/logout.php"
   },
   "migrate" : {
     "path" : "views/migrate.php"
   },
   "api/example": {
-    "path": "views/api/example.php",
-    "pattern": null
+    "path": "views/api/example.php"
   },
   "api/logs": {
-    "path": "views/api/logs.php",
-    "pattern": null
+    "path": "views/api/logs.php"
   },
   "api/test": {
-    "path": "views/api/test.php",
-    "pattern": null
+    "path": "views/api/test.php"
   },
 
   "api/login": {
-    "path": "views/api/login.php",
-    "pattern": null
+    "path": "views/api/login.php"
   },
   "api/logout": {
-    "path": "views/api/logout.php",
-    "pattern": null
+    "path": "views/api/logout.php"
   },
   "api/routes": {
-    "path": "views/api/routes.php",
-    "pattern": null
+    "path": "views/api/routes.php"
   }
 }
