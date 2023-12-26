@@ -1,4 +1,5 @@
 <?php
+
 $config['APP_TITLE'] = "Register | ".$config['APP_TITLE'];
 DB::connect();
 $customers = DB::select('users', '*', "status <> 'deleted'")->fetchAll();
@@ -12,10 +13,11 @@ if (isset($_REQUEST['btn-register'])) {
   if ($register){ 
     $user = new Auth();
     $user->login($_REQUEST['email'], $_REQUEST['password']);
+    redirect('/');
   }
 } else {
   if (App::getSession())
-    header("Location:" . route('admin'));
+    redirect('/');
 }
 
 ?>
