@@ -82,7 +82,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             ?>
             <div class="mb-3">
                 <label for="APP_URL" class="form-label">App URL</label>
-                <input type="text" name="APP_SLUG" class="form-control" value="<?= $config['APP_URL'] ?>">
+                <input type="text" name="APP_URL" class="form-control" value="<?= $config['APP_URL'] ?>">
                 <strong>Ex: https://mycoolapp.com/</strong>
             </div>
             <div class="mb-3">
