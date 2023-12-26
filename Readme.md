@@ -1,6 +1,12 @@
 <h1>GraphenePHP (Version 2.0.0) </h1>
 A simple and light-weight PHP framework.
-
+<p align="center">
+	<a href="https://github.com/imradhe"><img alt="Devloper" src="https://img.shields.io/badge/Devloper-Radhe%20Shyam%20Salopanthula-Success.svg?style=flat-square"/></a>
+	<a href="https://github.com/imradhe/GraphenePHP/LICENSE"><img alt="License" src="https://img.shields.io/github/license/imradhe/GraphenePHP.svg?style=flat-square"/></a>
+	<a href="https://github.com/imradhe/GraphenePHP/stargazers"><img alt="stars-shield" src="https://img.shields.io/github/stars/imradhe/GraphenePHP.svg?style=flat-square"/></a>
+	<a href="https://github.com/imradhe/GraphenePHP/network/members"><img alt="forks-shield" src="https://img.shields.io/github/forks/imradhe/GraphenePHP.svg?style=flat-square"/></a>
+	<a href="https://github.com/imradhe/GraphenePHP/graphs/traffic"><img alt="Total-Downlode" src="https://img.shields.io/github/downloads/imradhe/GraphenePHP/total.svg?style=flat-square"/></a>
+</p>
 ![GraphenePHP Home Screen](/assets/img/ss.png "GraphenePHP Home Screen")
 
 # Installation
