@@ -14,7 +14,7 @@ class App
     {
         $loginID = $_COOKIE['auth'];
         DB::connect();
-        $query = DB::select('logs', '*', "loginID='$loginID' and loggedout=0")->fetchAll();
+        $query = DB::select('logs', '*', "loginID='$loginID' and loggedoutAt is null")->fetchAll();
         DB::close();
         
         if ($query) {
@@ -34,7 +34,7 @@ class App
         $loginID = $_COOKIE['auth'];
 
         DB::connect();
-        $query = DB::select('logs', '*', "loginID='$loginID' and loggedout=0")->fetchAll()[0];
+        $query = DB::select('logs', '*', "loginID='$loginID' and loggedoutAt is null")->fetchAll()[0];
         
         if ($query) {
             $email = $query['email'];
@@ -44,5 +44,16 @@ class App
         } else {
             return false;
         }
+    }
+    /**
+     * Retrieves the user information by Email.
+     *
+     * @return array|false The user information if available, or false otherwise.
+     */
+    public static function getUserByEmail($email)
+    {
+        DB::connect();
+        $query = DB::select('users', '*', "email='$email'")->fetchAll()[0];
+        return $query;        
     }
 }
