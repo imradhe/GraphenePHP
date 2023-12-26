@@ -12,7 +12,7 @@
  */
 
 $config = [
-    'APP_NAME' => 'GraphenePHP',
+    'APP_NAME' => 'GraphenePHP App',
     'APP_TITLE' => 'GraphenePHP',
     'APP_URL' => 'http://localhost/',
     'APP_SLUG' => 'graphenephp',
