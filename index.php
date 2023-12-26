@@ -19,6 +19,14 @@ session_start();
 // -----------------------------------------------------------------------------
 // Configuration & Setup
 // -----------------------------------------------------------------------------
+
+// Task 1: Check if config.php file exists, if not, copy config_example.php
+if (!file_exists('config.php')) {
+    require('setup.php');
+    exit;
+
+}
+
 require('config.php');
 
 // -----------------------------------------------------------------------------
