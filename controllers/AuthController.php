@@ -6,9 +6,10 @@
 class Auth
 {
     protected $db;
-    protected $loginID;
+    protected $loginId;
     protected $currentLog;
     protected $email;
+    protected $newEmail;
     protected $password;
     protected $ip;
     protected $os;
@@ -38,10 +39,10 @@ class Auth
     // Check the session validity
     public function checkSession()
     {
-        $this->loginID = $_COOKIE['auth'];
+        $this->loginId = $_COOKIE['auth'];
 
         DB::connect();
-        $query = DB::select('logs', '*', "loginID = '$this->loginID' AND loggedout = 0")->fetchAll();
+        $query = DB::select('logs', '*', "loginId = '$this->loginId' AND loggedoutAt is null")->fetchAll();
         DB::close();
 
         if ($query) {
@@ -69,7 +70,7 @@ class Auth
 
 
         DB::connect();
-        $loginQuery = DB::select('users', '*', "email = '$this->email'")->fetchAll()[0];
+        $loginQuery = DB::select('users', '*', "email = '$this->email' and status <> 'deleted'")->fetchAll()[0];
         DB::close();
 
         // Check if user exists
@@ -77,8 +78,8 @@ class Auth
             // Check if password is correct
             if ($loginQuery['password'] == md5($this->password)) {
 
-                $this->loginID = md5(sha1($this->email) . sha1($this->password) . sha1(time()));
-                setcookie("auth", $this->loginID, time() + (86400 * 365), "/");
+                $this->loginId = md5(sha1($this->email) . sha1($this->password) . sha1(time()));
+                setcookie("auth", $this->loginId, time() + (86400 * 365), "/");
 
                 $this->ip = getDevice()['ip'];
                 $this->os = getDevice()['os'];
@@ -86,7 +87,7 @@ class Auth
 
                 $time = date_create()->format('Y-m-d H:i:s');
                 $data = [
-                    'loginID' => $this->loginID,
+                    'loginId' => $this->loginId,
                     'email' => $this->email,
                     'ip' => $this->ip,
                     'browser' => $this->browser,
@@ -102,7 +103,7 @@ class Auth
                     if (!empty($_GET['back'])) {
                         header("Location:" . $_GET['back']);
                     } else {
-                        header("Location:" . home());
+                        header("Location:" . route(''));
                     }
                 } else {
                     $this->errors = "Internal Server Error";
@@ -126,7 +127,7 @@ class Auth
     public function check($email, $role)
     {
         DB::connect();
-        $result = DB::select('users', '*', "email = '$email' and role = '$role'")->fetchAll();
+        $result = DB::select('users', '*', "email = '$email' and role = '$role' and status <> 'deleted'")->fetchAll();
         DB::close();
         return count($result);
     }
@@ -140,14 +141,15 @@ class Auth
      * @return array The result of the select query.
      */
     public function getUser($email)
-    {
+    {   
         DB::connect();
-        $getUser = DB::select('users', '*', "email = 'DB::sanitize($email)'")->fetchAll();
+        $email = DB::sanitize($email);
+        $getUser = DB::select('users', '*', "email = '$email' and status <> 'deleted'")->fetchAll()[0];
         DB::close();
         if ($getUser)
             return $getUser;
         else
-            return ['error' => true];
+            return ['error' => true, "errorMsgs" => ['user' => "User Not Found"]];
     }
 
 
@@ -159,7 +161,7 @@ class Auth
     public function getUsers()
     {
         DB::connect();
-        $users = DB::select('users', '*')->fetchAll();
+        $users = DB::select('users', '*', "status <> 'deleted'")->fetchAll();
         DB::close();
         if ($users)
             return $users;
@@ -175,7 +177,7 @@ class Auth
      * @param array $userData The user data to be registered.
      * @return array The result of the registration operation.
      */
-    public function register($name, $email, $phone, $password, $role)
+    public function register($name, $email, $phone, $password, $role, $status = "pending")
     {
         // Sanitize fields
         DB::connect();
@@ -184,6 +186,7 @@ class Auth
         $this->phone = trim(DB::sanitize($phone));
         $this->passwordWithoutMD5 = DB::sanitize($password);
         $this->role = trim(DB::sanitize($role));
+        $this->status = trim(DB::sanitize($status));
         DB::close();
 
         // fields array
@@ -263,7 +266,8 @@ class Auth
                 'email' => $this->email,
                 'password' => $this->password,
                 'phone' => $this->phone,
-                'role' => $this->role
+                'role' => $this->role,
+                'status' => $this->status
             );
 
 
@@ -282,8 +286,7 @@ class Auth
             if ($this->error) {
                 return ['error' => $this->error, 'errorMsgs' => $this->errorMsgs];
             } else {
-                $userLogin = new Auth();
-                return $userLogin->login($this->email, $this->passwordWithoutMD5);
+                return ['error' => $this->error, 'errorMsgs' => $this->errorMsgs, 'message' => 'Registration successful'];
             }
         }
 
@@ -295,110 +298,100 @@ class Auth
      *
      * @param array $data The user data to be edited.
      * @return array The result of the edit operation.
-     */
-    public function edit($data)
-    {
-        DB::connect();
-        $this->name = trim(DB::sanitize($data['name']));
-        $this->email = trim(DB::sanitize($data['email']));
-        $this->phone = trim(DB::sanitize($data['phone']));
-        $this->password = DB::sanitize($data['password']);
-        $this->role = trim(DB::sanitize($data['role']));
-        $this->status = trim(DB::sanitize($data['status']));
-        DB::close();
+     */public function edit($email, $data)
+{
+    DB::connect();
+    $this->name = trim(DB::sanitize($data['name']));
+    $this->email = trim(DB::sanitize($email));
+    $this->newEmail = trim(DB::sanitize($data['email']));
+    $this->phone = trim(DB::sanitize($data['phone']));
+    $this->password = DB::sanitize($data['password']);
+    $this->role = trim(DB::sanitize($data['role']));
+    $this->status = trim(DB::sanitize($data['status']));
+    DB::close();
 
-        // Define validation rules for fields
-        $fields = [
-            'name' => [
-                'value' => $this->name,
-                'rules' => [
-                    [
-                        'type' => 'required',
-                        'message' => "Name can't be empty",
-                    ],
-                    [
-                        'type' => 'minLength',
-                        'message' => "Name can't be less than 6 characters",
-                        'minLength' => 6,
-                    ]
+    // Define validation rules for fields
+    $fields = [
+        'name' => [
+            'value' => $this->name,
+            'rules' => [
+                [
+                    'type' => 'required',
+                    'message' => "Name can't be empty",
+                ],
+                [
+                    'type' => 'minLength',
+                    'message' => "Name can't be less than 6 characters",
+                    'minLength' => 6,
                 ]
-            ],
-            'email' => [
-                'value' => $this->email,
-                'rules' => [
-                    [
-                        'type' => 'required',
-                        'message' => "Email can't be empty",
-                    ],
-                    [
-                        'type' => 'email',
-                        'message' => 'Email is invalid',
-                    ],
-                    [
-                        'type' => 'custom',
-                        'message' => 'Invalid User',
-                        'validate' => function () {
-                            return ($this->check($this->email, $this->role));
-                        },
-                    ],
+            ]
+        ],
+        'email' => [
+            'value' => $this->newEmail,
+            'rules' => [
+                [
+                    'type' => 'required',
+                    'message' => "Email can't be empty",
+                ],
+                [
+                    'type' => 'email',
+                    'message' => 'Email is invalid',
+                ],
+                [
+                    'type' => 'custom',
+                    'message' => 'Email already in use',
+                    'validate' => function () {
+                        return true;
+                    },
                 ],
             ],
-            'phone' => [
-                'value' => $this->phone,
-                'rules' => [
-                    [
-                        'type' => 'required',
-                        'message' => "Phone can't be empty",
-                    ],
-                    [
-                        'type' => 'phone',
-                        'message' => "Invalid Phone",
-                    ]
+        ],
+        'phone' => [
+            'value' => $this->phone,
+            'rules' => [
+                [
+                    'type' => 'required',
+                    'message' => "Phone can't be empty",
+                ],
+                [
+                    'type' => 'phone',
+                    'message' => "Invalid Phone",
                 ]
-            ],
+            ]
+        ],
+    ];
+
+    // Call the validateFields function
+    $validate = Validator::validate($fields);
+
+    if ($validate['error']) {
+        return ['error' => $validate['error'], 'errorMsgs' => $validate['errorMsgs']];
+    } else {
+
+        $updateData = [
+            'name' => $this->name,
+            'email' => $this->newEmail,
+            'password' => $this->password,
+            'phone' => $this->phone,
+            'role' => $this->role,
+            'status' => $this->status
         ];
+        
 
-        // Call the validateFields function
-        $validate = Validator::validate($fields);
+        DB::connect();
+        $updateUser = DB::update('users', $updateData, "email = '$this->email'");
+        DB::close();
 
-        if ($validate['error']) {
-            return ['error' => $validate['error'], 'errorMsgs' => $validate['errorMsgs']];
+        if ($updateUser) {
+            return $updateData;
         } else {
-            $this->password = md5($data['password']);
-
-            $data = array(
-                'name' => $this->name,
-                'password' => $this->password,
-                'phone' => $this->phone,
-                'role' => $this->role,
-                'status' => $this->status
-            );
-
-            DB::connect();
-            $updateUser = DB::update('users', $data, "email = '$this->email'");
-            DB::close();
-
-            if ($updateUser) {
-                $this->error = false;
-                $this->errorMsgs['updateUser'] = '';
-            } else {
-                $this->error = true;
-                $this->errorMsgs['updateUser'] = 'User account Updation failed ';
-            }
-
-            if ($this->error) {
-                return ['error' => $this->error, 'errorMsgs' => $this->errorMsgs];
-            } else {
-                return [
-                    'email' => $this->email,
-                    'name' => $this->name,
-                    'phone' => $this->phone,
-                    'password' => $this->password,
-                    'role' => $this->role
-                ];
-            }
+            return [
+                'error' => true,
+                'errorMsgs' => ['updateUser' => 'User account Updation failed'],
+            ];
         }
     }
+}
 
     /**
      * Deletes a user account.
@@ -407,16 +400,20 @@ class Auth
      * @return array The result of the delete operation.
      */
     public function delete($email)
-    {
-        if (!$this->getUser($email)) {
-            return [
-                'error' => true,
-                'errorMsg' => 'User not found'
-            ];
-        }
+    {   $check = $this->getUser($email);
 
+        if($check['error']) return $check;
+        
+        DB::connect();
+        $deleteLogs = DB::delete('logs', "email = '$email'");
+        DB::close();
+        
+        if(!$deleteLogs) return ["error"=> true,"errorMsgs"=> ["logs"=> "logs deletion failed"]];
+        
+        
         $data = array(
-            'status' => 1
+            'email'=> $email.md5($email.time()),
+            'status' => 'deleted'
         );
 
         DB::connect();
@@ -426,7 +423,8 @@ class Auth
         if ($deleteUser) {
             return [
                 'error' => false,
-                'errorMsg' => ''
+                'errorMsg' => '',
+                'message' => "$email successfully deleted"
             ];
         } else {
             return [
@@ -436,21 +434,48 @@ class Auth
         }
     }
 
+    public function changePassword($email, $newPassword)
+    {
+
+        // Update the user's password in the database
+        DB::connect();
+        // Sanitize and hash the new password
+        $newPasswordHashed = md5(DB::sanitize($newPassword));
+        $updateData = [
+            'password' => $newPasswordHashed,
+        ];
+        $updateUser = DB::update('users', $updateData, "email = '$email'");
+        DB::close();
+
+        if ($updateUser) {
+            return [
+                'error' => false,
+                'errorMsg' => '',
+                'message' => 'Password changed successfully!',
+            ];
+        } else {
+            return [
+                'error' => true,
+                'errorMsg' => 'Failed to change password. Please try again.',
+            ];
+        }
+    }
+
     /**
      * Logs out the user.
      */
     public function logout()
     {
-        $loginID = App::getSession()['loginID'];
+        errors();
+        $loginId = App::getSession()['loginId'];
         $time = date_create()->format('Y-m-d H:i:s');
 
         $data = array(
-            'loggedout' => 1,
-            'loggedoutat' => $time
+            'loggedoutAt' => $time
         );
 
         DB::connect();
-        $updateLog = DB::update('logs', $data, "loginID = '$loginID'");
+        $updateLog = DB::update('logs', $data, "loginId = '$loginId'");
         DB::close();
 
         if ($updateLog) {
