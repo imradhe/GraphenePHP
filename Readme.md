@@ -16,7 +16,14 @@ git clone https://github.com/imradhe/GraphenePHP.git
 ## Finish Setup
 Go to the app url to setup
 ![GraphenePHP Configuraion](/assets/img/configuraion.png "GraphenePHP Configuraion")
+- The setup script will display a form to update your database details.
+- Choose between "Local" and "Production" by toggling the switch.
+- Provide the required information, including the App URL, App Slug, Database Host, Database Name, Database User, and Database Password.
+- Optionally, click the eye icon to toggle the visibility of the database password.
+Click the "Finish" button to submit the form.
 
+
+> Note: Ensure that you have PHP installed on your system and that the necessary extensions are enabled.
 
 
 ## Modify config.php
@@ -31,6 +38,8 @@ APP_SLUG = [Directory name]
 > i.e. if directory path is C:\xampp\htdocs\MyCoolApp <br>
 Then <br>
 > APP_SLUG = MyCoolApp
+
+
 
 # Directory Structure
 ```
