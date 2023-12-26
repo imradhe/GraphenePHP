@@ -1,8 +1,5 @@
 <?php
 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(1);
 
 require('models/migrator.php');
 require('models/db.php');
@@ -79,19 +76,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
             // Assuming you have a function to read the existing config.php
             require('config_example.php');
-            $config['APP_SLUG'] = basename(getcwd());
             ?>
-            <div class="mb-3">
+            <div class="mb-3 row fs-4">
+                <span class="col-5">Local</span>
+                <span class="form-check form-switch col">
+                    <input class="form-check-input text-right" type="checkbox" id="productionSwitch">
+                    <label class="form-check-label" for="productionSwitch"></label>
+                </span>
+                <span class="col-4">Production</span>
+            </div>
+            <div class="my-3" id="appURLField">
                 <label for="APP_URL" class="form-label">App URL</label>
-                <input type="text" name="APP_URL" class="form-control" value="<?= $config['APP_URL'] ?>">
+                <input type="text" name="APP_URL" class="form-control" value="<?=(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') ? "https://".$_SERVER['HTTP_HOST']."/" : "http://".$_SERVER['HTTP_HOST']."/" ?>">
                 <strong>Ex: https://mycoolapp.com/</strong>
             </div>
-            <div class="mb-3">
+            <div class="mb-3" id="appSlugField">
                 <label for="APP_SLUG" class="form-label">App Slug </label>
-                <input type="text" name="APP_SLUG" class="form-control" value="<?= $config['APP_SLUG'] ?>">
-                
-                <strong>What is slug? <i class="bi bi-info-circle fs-5 text-primary" type="button" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-custom-class="custom-tooltip" data-bs-html="true" data-bs-title="Slug is the name of your directory.<br>For example if your directory name is <b>'MyCoolApp'</b>, it is your slug<br> <br> Note: If you are hosting it in a server and the app is in root directory leave this empty"></i>
-</strong>
+                <input type="text" name="APP_SLUG" id="appSlug" class="form-control" value="<?= basename(getcwd()) ?>">
+                <strong>What is slug? <i class="bi bi-info-circle fs-5 text-primary" type="button" data-bs-toggle="tooltip"
+                        data-bs-placement="right" data-bs-custom-class="custom-tooltip" data-bs-html="true"
+                        data-bs-title="Slug is the name of your directory.<br>For example, if your directory name is <b>'MyCoolApp'</b>, it is your slug<br> <br> Note: If you are hosting it in a server and the app is in the root directory, leave this empty"></i>
+                </strong>
             </div>
 
             <div class="mb-3">
@@ -109,16 +114,47 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                 <input type="text" name="db_user" class="form-control" value="<?= $config['DB_USERNAME'] ?>" required>
             </div>
 
+            <div class="text-end">
+        <span class="text-graphene user-select-none" id="eye"></span>
+      </div>
             <div class="mb-3">
                 <label for="db_password" class="form-label">Database Password</label>
-                <input type="password" name="db_password" class="form-control" value="<?= $config['DB_PASSWORD'] ?>">
+                <input type="password" id="db_password" name="db_password" class="form-control" value="<?= $config['DB_PASSWORD'] ?>">
             </div>
+
 
             <button type="submit" class="btn btn-graphene">Finish</button>
         </form>
         <script>
-            const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
-            const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+
+            
+    let password = document.querySelector("#db_password");
+    let eye = document.querySelector('#eye')
+    eye.innerHTML = '<i class="bi bi-eye-fill"></i> Show Password'
+    eye.addEventListener('click', passwordToggle)
+    function passwordToggle() {
+      if (password.type == "password") {
+        password.type = "text";
+        eye.innerHTML = '<i class="bi bi-eye-slash-fill"></i> Hide Password'
+      } else {
+        password.type = "password";
+        eye.innerHTML = '<i class="bi bi-eye-fill"></i> Show Password'
+      }
+    }
+
+         const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+const tooltipList = Array.from(tooltipTriggerList).map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
+
+const productionSwitch = document.querySelector('#productionSwitch');
+const appSlugInput = document.getElementById('appSlug');
+const appSlugField = document.querySelector('#appSlugField');
+
+productionSwitch.addEventListener('change', function () {
+    appSlugField.classList.toggle('d-none', this.checked);
+    appSlugInput.value = this.checked ? '' : '<?= basename(getcwd()) ?>';
+});
+
+
         </script>
     </body>
 
@@ -214,8 +250,6 @@ function createDatabase($dbName)
         // Migrate tables
         $migrate = Migrator::migrate($tables);
 
-
-
         unset($_REQUEST);
         ?>
         <script>
@@ -229,3 +263,4 @@ function createDatabase($dbName)
     // Close connection
     $mysqli->close();
 }
+?>
