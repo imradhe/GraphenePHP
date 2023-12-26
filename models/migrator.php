@@ -9,9 +9,8 @@
  * @package GraphenePHP
  * @version 1.0
  */
-
 class Migrator
-{
+{   
     /**
      * Migrate tables
      *
