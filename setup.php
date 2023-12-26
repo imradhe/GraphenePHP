@@ -81,8 +81,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             require('config_example.php');
             ?>
             <div class="mb-3">
-                <label for="app_slug" class="form-label">App Slug </label>
-                <input type="text" name="app_slug" class="form-control" value="<?= $config['APP_SLUG'] ?>">
+                <label for="APP_URL" class="form-label">App URL</label>
+                <input type="text" name="APP_SLUG" class="form-control" value="<?= $config['APP_URL'] ?>">
+                <strong>Ex: https://mycoolapp.com/</strong>
+            </div>
+            <div class="mb-3">
+                <label for="APP_SLUG" class="form-label">App Slug </label>
+                <input type="text" name="APP_SLUG" class="form-control" value="<?= $config['APP_SLUG'] ?>">
                 
                 <strong>What is slug? <i class="bi bi-info-circle fs-5 text-primary" type="button" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-custom-class="custom-tooltip" data-bs-html="true" data-bs-title="Slug is the name of your directory.<br>For example if your directory name is <b>'MyCoolApp'</b>, it is your slug<br> <br> Note: If you are hosting it in a server and the app is in root directory leave this empty"></i>
 </strong>
@@ -150,7 +155,8 @@ function updateDatabaseDetails($data)
     $config['DB_DATABASE'] = $data['db_name'];
     $config['DB_USERNAME'] = $data['db_user'];
     $config['DB_PASSWORD'] = $data['db_password'];
-    $config['APP_SLUG'] = $data['app_slug'];
+    $config['APP_URL'] = $data['APP_URL'];
+    $config['APP_SLUG'] = $data['APP_SLUG'];
 
     // Write updated config.php
     $content = "<?php\n\n";
