@@ -64,8 +64,6 @@ function locked($role = ['user'])
     return unauthorized();
   }
 }
-
-
 function redirectIfLocked()
 {
   if (url() != route("login"))
@@ -73,6 +71,15 @@ function redirectIfLocked()
 }
 
 
+// Redirect to a specific route
+function redirect($route){
+  $regex = "/^(https?|ftp):\/\/[a-z0-9+!*(),;?&=\$_.-]+(\.[a-z0-9+!*(),;?&=\$_.-]+)*(:[0-9]{2,5})?(\/([a-z0-9+_\$_-]\.?)+)*\/?(\?[a-z+&\$_.-][a-z0-9;:@&%=+\/\$_.-]*)?(#[a-z_.-][a-z0-9+\$_.-]*)?$/i";
+  ?>
+  <script>
+    window.location.href = "<?php if(preg_match($regex, $route)) echo $route; else echo route($route);?>"
+  </script>
+  <?php
+}
 
 function assets($path)
 {
@@ -90,6 +97,8 @@ function route($path)
 {
   return home() . $path;
 }
+
+
 
 // Get Query String
 function queryString()
