@@ -2,6 +2,15 @@
 
 /**
  * The App class provides utility methods for the main application.
+ *
+ * GraphenePHP App Controller
+ *
+ * This class provides validation functionalities for form fields.
+ * It allows defining validation rules and callbacks for each field,
+ * and returns error messages for invalid fields.
+ *
+ * @package GraphenePHP
+ * @version 2.0.0
  */
 class App
 {
