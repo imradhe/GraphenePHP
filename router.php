@@ -1,4 +1,14 @@
 <?php
+
+/**
+ * GraphenePHP Router
+ *
+ * This file contains the Routing System for the GraphenePHP framework.
+ *
+ * @package GraphenePHP
+ * @version 2.0.0
+ */
+
 class Router
 {
     public $request;
