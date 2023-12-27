@@ -39,5 +39,3 @@ $config = [
     'APP_KEYWORDS' => 'GraphenePHP App, Radhe Shyam Salopanthula',
     'APP_TWITTER_CREATOR' => '@imraadhe',
 ];
-
-return $config;
