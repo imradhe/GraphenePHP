@@ -92,7 +92,7 @@ This project is licensed under the [Apache 2.0 License](LICENSE)
 
 # 🤗 Contributing
 
-Check out [CONTRIBUTING.md](https://github.com/abelljs/abell/tree/main/CONTRIBUTING.md)
+Check out [CONTRIBUTING.md](CONTRIBUTING.md)
 
 
 If you want to know the status and get updates you can follow me on [Instagram @imraadhe](https://instagram.com/imraadhe)
