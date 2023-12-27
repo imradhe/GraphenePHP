@@ -89,8 +89,23 @@ Then <br>
 
 If you want to know the status and get updates you can follow me on [Instagram @imraadhe](https://instagram.com/imraadhe)
 
-# Collaborators
+# Contributors
 
-1. @karanamakhildatta
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+
+<!-- ALL-CONTRIBUTORS-LIST:END -->
 
 
+<!--
+@all-contributors please add @imradhe for infrastructure, tests and code
+
+
+@all-contributors please add @karanamakhildatta for code
+
+
+-->
