@@ -11,7 +11,7 @@ A simple and light-weight PHP framework.
 
 ![GraphenePHP Home Screen](/assets/img/ss.png "GraphenePHP Home Screen")
 
-# Installation
+# 🚀 &nbsp; Installation
 
 ## Prerequisites
 Before you begin, ensure that you have PHP installed on your system with the required extensions.
@@ -22,7 +22,7 @@ Before you begin, ensure that you have PHP installed on your system with the req
 git clone https://github.com/imradhe/GraphenePHP.git
 ```
 
-# Configuration
+# 📖 &nbsp; Configuration
 
 ## Finish Setup
 
@@ -85,6 +85,14 @@ Then <br>
 └── ...
 ```
 
+
+### 📄 License
+
+This project is licensed under the [Apache 2.0 License](LICENSE)
+
+### 🤗 Contributing
+
+Check out [CONTRIBUTING.md](https://github.com/abelljs/abell/tree/main/CONTRIBUTING.md)
 
 
 If you want to know the status and get updates you can follow me on [Instagram @imraadhe](https://instagram.com/imraadhe)
