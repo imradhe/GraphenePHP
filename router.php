@@ -55,7 +55,7 @@ class Router
     private function getPattern($route)
     {
         $pattern = str_replace('/', '\/', $route);
-        $pattern = preg_replace('/{([\w@.-]+)}/', '(?P<$1>[\w@.-]+)', $pattern);
+        $pattern = preg_replace('/{([\w@+.-_]+)}/', '(?P<$1>[\w@.-]+)', $pattern);
         return '/^' . $pattern . '$/';
     }
     
