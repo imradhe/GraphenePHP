@@ -72,10 +72,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     <body class="text-center mt-5">
         <h2>GraphenePHP App Setup</h2>
         <form method="post" class="form-setup">
+
             <?php
 
             // Assuming you have a function to read the existing config.php
             require('config_example.php');
+
+            if($_REQUEST['error']) ?>
+            <div class="alert alert-danger">
+                <?php 
+                if($_REQUEST['error'] == "db") echo "Please check the database name";
+                elseif($_REQUEST['error'] == "copy") echo "config file couldn't be copied";
+                ?>
+        </div>
+            <?php
             ?>
             <div class="mb-3 row fs-4">
                 <span class="col-5">Local</span>
@@ -258,9 +268,52 @@ function createDatabase($dbName)
         <?php
     } else {
         echo "Error creating database: " . $mysqli->error;
+
+        //  Copy config.php 
+        if (copy('config.php', 'config_example.php')) {
+    
+            // Task 5: Remove config_example.php
+            unlink('config.php');
+        } else {
+            echo 'Error copying config.php';
+            redirect('/?error=copy', 2);
+            
+        unset($_REQUEST);
+        }
+        sleep(2);
+        redirect('/?error=db', 2);
+        
+    unset($_REQUEST);
     }
 
     // Close connection
     $mysqli->close();
 }
+
+
+// Redirect to a specific route with optional delay
+function redirect($route, $delay = 0){
+    $regex = "/^(https?|ftp):\/\/[a-z0-9+!*(),;?&=\$_.-]+(\.[a-z0-9+!*(),;?&=\$_.-]+)*(:[0-9]{2,5})?(\/([a-z0-9+_\$_-]\.?)+)*\/?(\?[a-z+&\$_.-][a-z0-9;:@&%=+\/\$_.-]*)?(#[a-z_.-][a-z0-9+\$_.-]*)?$/i";
+    ?>
+    <script>
+      setTimeout(function() {
+        window.location.href = "<?php if(preg_match($regex, $route)) echo $route; else echo route($route);?>";
+      }, <?php echo $delay; ?>);
+    </script>
+    <?php
+  }
+  
+  // Get url for a route
+  function route($path)
+  {
+    return home() . $path;
+  }
+  
+// Home URL
+function home()
+{
+  require('config_example.php');
+  return (empty($config['APP_SLUG'])) ? $config['APP_URL'] : $config['APP_URL'] . $config['APP_SLUG'] . "/";
+}
+
 ?>
