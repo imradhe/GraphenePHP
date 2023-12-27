@@ -37,6 +37,7 @@ class Router
                 $routes = $this->routes;
                 $routeFound = false;
                 foreach ($routes as $route => $data) {
+                    
                     if (preg_match($this->getPattern($route), $this->request, $matches)) {
                         $this->setRouteVariables($data, $matches);
                         include($data['path']);
@@ -54,7 +55,7 @@ class Router
     private function getPattern($route)
     {
         $pattern = str_replace('/', '\/', $route);
-        $pattern = preg_replace('/{([\w-]+)}/', '(?P<$1>[\w-]+)', $pattern);
+        $pattern = preg_replace('/{([\w@.-]+)}/', '(?P<$1>[\w@.-]+)', $pattern);
         return '/^' . $pattern . '$/';
     }
     
