@@ -3,7 +3,7 @@
     "projectOwner": "imradhe",
     "repoType": "github",
     "repoHost": "https://github.com",
-    "files": ["README.md"],
+    "files": ["Readme.md"],
     "imageSize": 100,
     "commit": false,
     "contributorsPerLine": 7,
