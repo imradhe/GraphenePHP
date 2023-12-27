@@ -294,7 +294,34 @@ function getDevice()
 
 
 
+function insertVisitorLog()
+{
+    DB::connect();
 
+    $visitorInfo = getDevice();
+    $url = $_SERVER['REQUEST_URI'];
+    $previousVisitTime = time() - 60;
+    $result = DB::select('visitors', "COUNT(*) as count", "ip = '{$visitorInfo['ip']}' AND url = '$url' AND visitedAt > FROM_UNIXTIME($previousVisitTime)")->fetchAll();
+    
+    if ($result[0]['count'] == 0) {
+        $ip = getIP();
+        $os = $visitorInfo['os'];
+        $browser = $visitorInfo['browser'];
+        $visitedAt = date('Y-m-d H:i:s');
+        $visitorId = md5($ip.$os.$browser.$visitedAt);
+
+        $data = [
+            'visitorId' => $visitorId,
+            'ip' => $ip,
+            'os' => $os,
+            'browser' => $browser,
+            'visitedAt' => $visitedAt,
+            'url' => $url
+        ];
+        DB::insert('visitors', $data);
+    }
+    DB::close();
+}
 
 /**
  * api functions
