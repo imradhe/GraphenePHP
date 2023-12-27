@@ -1,5 +1,7 @@
 # Contributing to a GitHub Repository
 
+> **Note:** Alternatively you can check [Github Official Docs](https://docs.github.com/en/pull-requests) for clear steps 
+
 ## 1. Fork the Repository
 
 - Visit the GitHub repository you want to contribute to.
