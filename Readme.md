@@ -92,7 +92,18 @@ This project is licensed under the [Apache 2.0 License](LICENSE)
 
 # 🤗 Contributing
 
-Check out [CONTRIBUTING.md](CONTRIBUTING.md)
+1. Fork the Repository
+2. Clone Your Fork
+3. Navigate to the Cloned Repository
+4. Create a New Branch
+5. Make Changes
+6. Commit Changes
+7. Push Changes
+8. Create a Pull Request
+9. Wait for Review
+10. Keep Your Fork Updated
+
+Check out [CONTRIBUTING.md](CONTRIBUTING.md) for detailed steps
 
 
 If you want to know the status and get updates you can follow me on [Instagram @imraadhe](https://instagram.com/imraadhe)
