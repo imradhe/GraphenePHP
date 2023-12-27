@@ -91,7 +91,7 @@ Then <br>
 This project is licensed under the [Apache 2.0 License](LICENSE)
 
 # 🤗 Contributing
-
+### 10 Steps for Github Contribution
 1. Fork the Repository
 2. Clone Your Fork
 3. Navigate to the Cloned Repository
