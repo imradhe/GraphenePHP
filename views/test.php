@@ -1,4 +1,3 @@
 <?php
 
-echo $_REQUEST['username'];
-?>
+echo json_encode($_REQUEST);
