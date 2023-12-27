@@ -86,11 +86,11 @@ Then <br>
 ```
 
 
-### 📄 License
+# 📄 License
 
 This project is licensed under the [Apache 2.0 License](LICENSE)
 
-### 🤗 Contributing
+# 🤗 Contributing
 
 Check out [CONTRIBUTING.md](https://github.com/abelljs/abell/tree/main/CONTRIBUTING.md)
 
