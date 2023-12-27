@@ -2,9 +2,7 @@
 /**
  * GraphenePHP DB Class
  *
- * This class provides validation functionalities for form fields.
- * It allows defining validation rules and callbacks for each field,
- * and returns error messages for invalid fields.
+ * This class contains all Database CRUD functions
  *
  * @package GraphenePHP
  * @version 2.0.0
