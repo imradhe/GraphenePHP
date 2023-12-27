@@ -13,6 +13,9 @@ A simple and light-weight PHP framework.
 
 # Installation
 
+## Prerequisites
+Before you begin, ensure that you have PHP installed on your system with the required extensions.
+
 ## Create GraphenePHP Project (Git Clone the repository)
 
 ```bash
@@ -31,9 +34,6 @@ Go to the app url to setup
 - Provide the required information, including the App URL, App Slug, Database Host, Database Name, Database User, and Database Password.
 - Optionally, click the eye icon to toggle the visibility of the database password.
 Click the "Finish" button to submit the form.
-
-
-> Note: Ensure that you have PHP installed on your system and that the necessary extensions are enabled.
 
 
 ## Modify config.php
