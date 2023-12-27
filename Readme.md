@@ -22,7 +22,9 @@ git clone https://github.com/imradhe/GraphenePHP.git
 # Configuration
 
 ## Finish Setup
+
 Go to the app url to setup
+
 ![GraphenePHP Configuraion](/assets/img/configuraion.png "GraphenePHP Configuraion")
 - The setup script will display a form to update your database details.
 - Choose between "Local" and "Production" by toggling the switch.
