@@ -3,6 +3,7 @@
         $tables = [
             'users' => 'auth/users.sql',
             'logs' => 'auth/logs.sql',
+            'visitors' => 'auth/visitors.sql',
             // Add more tables as needed
         ];
         
