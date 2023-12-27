@@ -1,6 +1,6 @@
 <?php
 
-
+errors(0);
 require('models/migrator.php');
 require('models/db.php');
 
@@ -78,14 +78,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             // Assuming you have a function to read the existing config.php
             require('config_example.php');
 
-            if($_REQUEST['error']) ?>
+            if(isset($_REQUEST['error'])){ ?>
             <div class="alert alert-danger">
+
                 <?php 
                 if($_REQUEST['error'] == "db") echo "Please check the database name";
                 elseif($_REQUEST['error'] == "copy") echo "config file couldn't be copied";
                 ?>
         </div>
             <?php
+            }
             ?>
             <div class="mb-3 row fs-4">
                 <span class="col-5">Local</span>
@@ -314,6 +316,20 @@ function home()
 {
   require('config_example.php');
   return (empty($config['APP_SLUG'])) ? $config['APP_URL'] : $config['APP_URL'] . $config['APP_SLUG'] . "/";
+}
+
+function errors($enable = true)
+{
+  if ($enable) {
+    ini_set('display_errors', 1);
+    ini_set('display_startup_errors', 1);
+    error_reporting(E_ALL);
+  } else {
+    ini_set('display_errors', 0);
+    ini_set('display_startup_errors', 0);
+    error_reporting(0);
+  }
+  return $enable;
 }
 
 ?>
