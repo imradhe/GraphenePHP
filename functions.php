@@ -71,12 +71,14 @@ function redirectIfLocked()
 }
 
 
-// Redirect to a specific route
-function redirect($route){
+// Redirect to a specific route with optional delay
+function redirect($route, $delay = 0){
   $regex = "/^(https?|ftp):\/\/[a-z0-9+!*(),;?&=\$_.-]+(\.[a-z0-9+!*(),;?&=\$_.-]+)*(:[0-9]{2,5})?(\/([a-z0-9+_\$_-]\.?)+)*\/?(\?[a-z+&\$_.-][a-z0-9;:@&%=+\/\$_.-]*)?(#[a-z_.-][a-z0-9+\$_.-]*)?$/i";
   ?>
   <script>
-    window.location.href = "<?php if(preg_match($regex, $route)) echo $route; else echo route($route);?>"
+    setTimeout(function() {
+      window.location.href = "<?php if(preg_match($regex, $route)) echo $route; else echo route($route);?>";
+    }, <?php echo $delay; ?>);
   </script>
   <?php
 }
