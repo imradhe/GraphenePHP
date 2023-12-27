@@ -5,6 +5,5 @@ CREATE TABLE visitors (
     os VARCHAR(255),
     browser VARCHAR(255),
     visitedAt DATETIME,
-    url VARCHAR(255),
-    FOREIGN KEY (visitorId) REFERENCES logs(loginId)
+    url VARCHAR(255)
 );
