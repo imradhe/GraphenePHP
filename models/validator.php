@@ -116,7 +116,8 @@ class Validator
         return [
             'error' => $errorCount > 0,
             'errorMsgs' => $errorMsgs,
-            'fields' => $fields
+            'fields' => array_map(fn($field) => $field['value'], $fields)
         ];
+
     }
 }
