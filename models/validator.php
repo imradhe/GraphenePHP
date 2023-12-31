@@ -42,61 +42,61 @@ class Validator
                             $errorMessages[] = $message;
                         }
                         break;
-                    
+
                     case 'minLength':
                         if (!empty($value) && strlen($value) < $rule['minLength']) {
                             $errorMessages[] = $message;
                         }
                         break;
-                    
+
                     case 'maxLength':
                         if (!empty($value) && strlen($value) > $rule['maxLength']) {
                             $errorMessages[] = $message;
                         }
                         break;
-                    
+
                     case 'email':
                         if (!empty($value) && !preg_match('/^[^\s@]+@[^\s@]+\.[^\s@]+$/', $value)) {
                             $errorMessages[] = $message;
                         }
                         break;
-                    
+
                     case 'phone':
                         if (!empty($value) && !preg_match('/^[6-9][0-9]{9}$/', $value)) {
                             $errorMessages[] = $message;
                         }
                         break;
-                    
+
                     case 'pan':
                         if (!empty($value) && !preg_match('/^[A-Z]{5}[0-9]{4}[A-Z]{1}$/', $value)) {
                             $errorMessages[] = $message;
                         }
                         break;
-                    
+
                     case 'aadhaar':
                         if (!empty($value) && !preg_match('/^[2-9]{1}[0-9]{11}$/', $value)) {
                             $errorMessages[] = $message;
                         }
                         break;
-                    
+
                     case 'password':
                         if (!empty($value) && !preg_match("/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/", $value)) {
                             $errorMessages[] = $message;
                         }
                         break;
-                    
+
                     case 'url':
-                        if (!empty($value) && !preg_match("/^(https?:\/\/)?[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}(\/\S*)?$/", $value)) {
+                        if (!empty($value) && !preg_match("/^(https?:\/\/)[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}(\/\S*)?$/", $value)) {
                             $errorMessages[] = $message;
                         }
                         break;
-                    
+
                     case 'domain':
                         if (!empty($value) && !preg_match("/^[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/", $value)) {
                             $errorMessages[] = $message;
                         }
                         break;
-                    
+
                     // Add more rule types as needed
                     default:
                         // Custom rule type
