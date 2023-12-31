@@ -116,7 +116,7 @@ class Validator
         return [
             'error' => $errorCount > 0,
             'errorMsgs' => $errorMsgs,
-            'fields' => 'dg'
+            'fields' => $fields
         ];
     }
 }
