@@ -85,6 +85,18 @@ class Validator
                             $errorMessages[] = $message;
                         }
                         break;
+                    case 'url':
+                        if (!preg_match("/^(https?:\/\/)?[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}(\/\S*)?$/", $value)) {
+                            $errorMessages[] = $message;
+                        }
+                        break;
+
+                    case 'domain':
+                        if (!preg_match("/^[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/", $value)) {
+                            $errorMessages[] = $message;
+                        }
+                        break;
+
                     // Add more rule types as needed
                     default:
                         // Custom rule type
