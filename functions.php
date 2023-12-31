@@ -526,3 +526,17 @@ function strtoinr($price)
   $formattedPrice = $inr->formatCurrency($price, $currency);
   return substr($formattedPrice, 0, strlen($formattedPrice) - 3);
 }
+
+function enumToArray($enumDefinition)
+{
+    // Remove the leading "enum(" and trailing ")"
+    $enumValuesString = substr($enumDefinition, 5, -1);
+
+    // Remove single quotes
+    $enumValuesString = str_replace("'", "", $enumValuesString);
+
+    // Split the string into an array using ","
+    $enumValuesArray = explode(",", $enumValuesString);
+
+    return $enumValuesArray;
+}
