@@ -42,66 +42,66 @@ class Validator
                             $errorMessages[] = $message;
                         }
                         break;
+                    
                     case 'minLength':
-                        if (strlen($value) < $rule['minLength']) {
+                        if (!empty($value) && strlen($value) < $rule['minLength']) {
                             $errorMessages[] = $message;
                         }
                         break;
+                    
                     case 'maxLength':
-                        if (strlen($value) > $rule['maxLength']) {
+                        if (!empty($value) && strlen($value) > $rule['maxLength']) {
                             $errorMessages[] = $message;
                         }
                         break;
+                    
                     case 'email':
-                        if (!preg_match('/^[^\s@]+@[^\s@]+\.[^\s@]+$/', $value)) {
+                        if (!empty($value) && !preg_match('/^[^\s@]+@[^\s@]+\.[^\s@]+$/', $value)) {
                             $errorMessages[] = $message;
                         }
                         break;
+                    
                     case 'phone':
-                        // Add your phone number validation logic here
-                        // You can use regular expressions or other techniques
-                        // to validate the phone number format
-                        // Example:
-                        if (!preg_match('/^[6-9][0-9]{9}$/', $value)) {
+                        if (!empty($value) && !preg_match('/^[6-9][0-9]{9}$/', $value)) {
                             $errorMessages[] = $message;
                         }
                         break;
+                    
                     case 'pan':
-                        // Add your PAN validation logic here
-                        // Example:
-                        if (!preg_match('/^[A-Z]{5}[0-9]{4}[A-Z]{1}$/', $value)) {
+                        if (!empty($value) && !preg_match('/^[A-Z]{5}[0-9]{4}[A-Z]{1}$/', $value)) {
                             $errorMessages[] = $message;
                         }
                         break;
+                    
                     case 'aadhaar':
-                        // Add your Aadhaar validation logic here
-                        // Example:
-                        if (!preg_match('/^[2-9]{1}[0-9]{11}$/', $value)) {
+                        if (!empty($value) && !preg_match('/^[2-9]{1}[0-9]{11}$/', $value)) {
                             $errorMessages[] = $message;
                         }
                         break;
+                    
                     case 'password':
-                        if (!preg_match("/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/", $value)) {
+                        if (!empty($value) && !preg_match("/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/", $value)) {
                             $errorMessages[] = $message;
                         }
                         break;
+                    
                     case 'url':
-                        if (!preg_match("/^(https?:\/\/)?[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}(\/\S*)?$/", $value)) {
+                        if (!empty($value) && !preg_match("/^(https?:\/\/)?[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}(\/\S*)?$/", $value)) {
                             $errorMessages[] = $message;
                         }
                         break;
-
+                    
                     case 'domain':
-                        if (!preg_match("/^[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/", $value)) {
+                        if (!empty($value) && !preg_match("/^[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/", $value)) {
                             $errorMessages[] = $message;
                         }
                         break;
-
+                    
                     // Add more rule types as needed
                     default:
                         // Custom rule type
                         $validateCallback = $rule['validate'];
-                        if (!$validateCallback($value)) {
+                        if (!empty($value) && !$validateCallback($value)) {
                             $errorMessages[] = $message;
                         }
                         break;
