@@ -62,7 +62,7 @@ class DB
     {
         $set = "";
         foreach ($data as $column => $value) {
-            $set .= "$column = '$value', ";
+            if($value != null) $set .= "$column = '$value', ";
         }
         $set = rtrim($set, ", ");
         $query = "UPDATE $table SET $set WHERE $where";
