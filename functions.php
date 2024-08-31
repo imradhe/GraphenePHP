@@ -126,6 +126,11 @@ function APIController($className)
   return require('controllers/api/' . $className . 'Controller.php');
 }
 
+// Add Test
+function test($className)
+{
+  return require('tests/' . $className . 'Test.php');
+}
 
 
 /**
@@ -433,7 +438,7 @@ function jsonResponse($message = null, $code = 200)
     $responseArray = array(
         'status' => $code < 300
     );
-    return json_encode($message);
+    echo json_encode($message);
 }
 
 
@@ -539,4 +544,13 @@ function enumToArray($enumDefinition)
     $enumValuesArray = explode(",", $enumValuesString);
 
     return $enumValuesArray;
+}
+
+function addDaysToDate($date, $days)
+{
+    $dateObject = new DateTime($date);
+    $dateInterval = new DateInterval('P' . $days . 'D'); // 'P' stands for Period and 'D' stands for Days
+    $dateObject->add($dateInterval);
+
+    return $dateObject->format('Y-m-d');
 }
