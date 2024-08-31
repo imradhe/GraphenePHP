@@ -1,6 +1,6 @@
 <h1>GraphenePHP (Version 2.0.0) </h1>
 <p align="center">
-	<a href="https://github.com/imradhe"><img alt="Devloper" src="https://img.shields.io/badge/Devloper-Radhe%20Shyam%20Salopanthula-Success.svg?style=flat-square"/></a>
+	<a href="https://github.com/imradhe"><img alt="Devloper" src="https://img.shields.io/badge/Developer-Radhe%20Shyam%20Salopanthula-Success.svg?style=flat-square"/></a>
 	<a href="https://github.com/imradhe/GraphenePHP/LICENSE"><img alt="License" src="https://img.shields.io/github/license/imradhe/GraphenePHP.svg?style=flat-square"/></a>
 	<a href="https://github.com/imradhe/GraphenePHP/stargazers"><img alt="stars-shield" src="https://img.shields.io/github/stars/imradhe/GraphenePHP.svg?style=flat-square"/></a>
 	<a href="https://github.com/imradhe/GraphenePHP/network/members"><img alt="forks-shield" src="https://img.shields.io/github/forks/imradhe/GraphenePHP.svg?style=flat-square"/></a>
