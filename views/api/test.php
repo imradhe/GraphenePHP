@@ -11,3 +11,4 @@ echo json_encode([
     'md5(SHA256)' => md5(sha256($data)),
     'md5(SHA512)' => md5(sha512($data)),
 ]);
+
