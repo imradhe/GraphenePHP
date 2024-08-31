@@ -22,8 +22,8 @@
         <a href="https://github.com/imradhe/GraphenePHP" class="btn btn-graphene" rel="noopener"><i
                 class="bib bi-github"></i> Github</a>
         <p>
-            <?php if ($user = App::getSession())
-                echo $user['email'] . " Logged In";
+            <?php if (App::getSession())
+                echo App::getUser()['email'] . " Logged In";
             else
                 "Logged Out"; ?>
         </p>
