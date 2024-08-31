@@ -1,12 +1,12 @@
 <?php
-$config['APP_TITLE'] = "Login | ".$config['APP_TITLE'];
+$config['APP_TITLE'] = "Login | " . $config['APP_TITLE'];
 if (isset($_POST['btn-login'])) {
 
- // csrfCheck();
+  // csrfCheck();
   controller("Auth");
   $auth = new Auth();
   $user = $auth->login($_POST['email'], $_POST['password']);
-  
+
 } else {
   if (App::getSession())
     header("Location:" . home());
@@ -77,7 +77,12 @@ if (isset($_POST['btn-login'])) {
       <?php } ?>
       <?php if ($user['error']) { ?>
         <div class="alert alert-danger" role="alert">
-          <?php echo $user['errorMsg']; ?>
+          <?php
+          foreach ($user['errorMsgs'] as $msg)
+            if (!empty(trim($msg)))
+              echo "<div class='error'>$msg</div>";
+          ?>
+
         </div>
       <?php } ?>
 
@@ -98,7 +103,9 @@ if (isset($_POST['btn-login'])) {
       <button class="btn btn-lg btn btn-graphene btn-block" id="btn-login" name="btn-login" type="login">Sign
         in</button>
 
-      <p class="mt-3">Don't Have an account? <a href="<?php echo route('register').queryString(); ?>">Create Account</a></p>
+      <p class="mt-3">Don't Have an account? <a href="<?php echo route('register') . queryString(); ?>">Create
+          Account</a>
+      </p>
   </form>
 
   <script>
