@@ -12,6 +12,4 @@ if (!empty($data)) {
     $res['data'] = $data;
 }
 
-http_response_code($res['status']);
-header('Content-Type: application/json');
-echo json_encode($res);
+jsonResponse($res, $res['status']);
