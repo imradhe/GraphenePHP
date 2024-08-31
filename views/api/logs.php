@@ -20,6 +20,4 @@ if (!empty($res['data'])) {
     $res['data'] = $data[0][0];
 }
 
-http_response_code($res['status']);
-header('Content-Type: application/json');
-echo json_encode(array_reverse($res));
+jsonResponse($res, $res['status']);
