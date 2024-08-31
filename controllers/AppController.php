@@ -23,7 +23,7 @@ class App
     {
         $loginID = $_COOKIE['auth'];
         DB::connect();
-        $query = DB::select('logs', '*', "loginID='$loginID' and loggedoutAt is null")->fetchAll();
+        $query = DB::select('logs', '*', "loginID='$loginID' and loggedOutAt is null")->fetchAll();
         DB::close();
         
         if ($query) {
@@ -43,11 +43,12 @@ class App
         $loginID = $_COOKIE['auth'];
 
         DB::connect();
-        $query = DB::select('logs', '*', "loginID='$loginID' and loggedoutAt is null")->fetchAll()[0];
-        
+        $query = DB::select('logs', '*', "loginID='$loginID' and loggedOutAt is null")->fetchAll()[0];
+        DB::close();
         if ($query) {
-            $email = $query['email'];
-            $currentLog = DB::select('users', '*', "email='$email'")->fetchAll();
+           $userID = $query['userID'];
+            DB::connect();
+            $currentLog = DB::select('users', '*', "userID='$userID'")->fetchAll();
             DB::close();
             return $currentLog[0];
         } else {
