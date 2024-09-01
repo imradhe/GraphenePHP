@@ -88,10 +88,20 @@ function assets($path)
   echo home() . "assets/" . $path;
 }
 
+function component($component, $variables = []){
+  foreach($variables as $variable => $value){
+    global $$variable;
+    $$variable = $value;
+  }
+  return require('components/' . $component . '.php');
+}
 
-function view($fileName)
-{
-  return require("views/" . $fileName . ".php");
+function partial($partial, $variables = []){
+  foreach($variables as $variable => $value){
+    global $$variable;
+    $$variable = $value;
+  }
+  return require('views/partials/' . $partial . '.php');
 }
 
 // Get url for a route
@@ -523,7 +533,7 @@ function slugify($text, string $divider = '-')
 
 // Convert currency value to INR
 function strtoinr($price)
-{
+{ // return $price; // Uncomment this line if NumberFormatter isn't installed on your server
   $locale = 'hi';
   $currency = 'INR';
   $inr = new NumberFormatter($locale, NumberFormatter::CURRENCY);
@@ -553,4 +563,35 @@ function addDaysToDate($date, $days)
     $dateObject->add($dateInterval);
 
     return $dateObject->format('Y-m-d');
+}
+
+function formatDuration($days) {
+  if ($days >= 365) {
+      $years = floor($days / 365);
+      $months = floor(($days % 365) / 30);
+      $additionalDays = ($days % 365) % 30;
+      $duration = $years . ' ' . ($years > 1 ? 'years' : 'year');
+      
+      if ($months > 0) {
+          $duration .= ', ' . $months . ' ' . ($months > 1 ? 'months' : 'month');
+      }
+      
+      if ($additionalDays > 0) {
+          $duration .= ($months > 0 ? ' & ' : ', ') . $additionalDays . ' ' . ($additionalDays > 1 ? 'days' : 'day');
+      }
+      
+      return $duration;
+  } elseif ($days >= 30) {
+      $months = floor($days / 30);
+      $additionalDays = $days % 30;
+      $duration = $months . ' ' . ($months > 1 ? 'months' : 'month');
+      
+      if ($additionalDays > 0) {
+          $duration .= ' & ' . $additionalDays . ' ' . ($additionalDays > 1 ? 'days' : 'day');
+      }
+      
+      return $duration;
+  } else {
+      return $days . ' ' . ($days > 1 ? 'days' : 'day');
+  }
 }
