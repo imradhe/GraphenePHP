@@ -4,7 +4,7 @@
 <?php 
 $config['APP_TITLE'] = "Unauthorized- ".$config['APP_NAME']
 ?>
-<?php include('views/partials/head.php'); ?>
+<?php partial('head', ['config' => $config]); ?>
 
 <style>
     #app {
