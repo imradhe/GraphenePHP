@@ -80,10 +80,10 @@ if (isset($_REQUEST['btn-register'])) {
     }
   </style>
 
-<?php include("views/partials/head.php"); ?>
+<?php partial("head", ['config' => $config]); ?>
 
 <body class="text-center">
-  <?php require('views/partials/nav.php'); ?>
+  <?php partial('nav'); ?>
   <div class="logo mt-5 pt-5">
     <a href="<?php echo home() ?>"><img src="<?php echo home() . $config['APP_ICON']; ?>" alt="GraphenePHP"
         class="img-fluid"></a>
