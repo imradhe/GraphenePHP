@@ -10,7 +10,7 @@
 
 <body>
 
-    <?php require('views/partials/nav.php'); ?>
+    <?php partial('nav'); ?>
 
     <div id="app" class="container text-center">
         <img src="<?php assets("img/GraphenePHP.png"); ?>" alt="GraphenePHP logo" title="GraphenePHP logo"
@@ -27,7 +27,7 @@
             else
                 "Logged Out"; ?>
         </p>
-        <?php include('views/partials/footer.php'); ?>
+        <?php partial('footer'); ?>
     </div>
 </body>
 
